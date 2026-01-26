@@ -27,7 +27,7 @@ export default defineNuxtConfig({
 
   runtimeConfig:{
     public:{
-      apiURL: API_BASE_URL
+      baseURL: API_BASE_URL
     }
   },
 

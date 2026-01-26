@@ -1,44 +1,163 @@
-import type { AuthResponse } from "~/types";
-import { useAuthStore } from "~/stores/auth";
+import type { IShipment, IShipmentResponse, ITrackingShipment } from "~/types";
 import { apiClient } from "~/utils/api";
+import { useShipmentStore } from "~/stores/shipmentStore";
 
-export function useAuth() {
-    const authStore = useAuthStore()
-    const router = useRouter()
+export function useShipments() {
+    const shipmentStore = useShipmentStore()
 
-    // --- login ---
-    async function login(email:string, password: string) {
+    async function getAllShipment() {
         try {
-            const data = await $fetch<AuthResponse>('/login', {
-                ...apiClient(),
-                method: 'POST',
-                body:{email}
+            shipmentStore.setPending(true)
+            shipmentStore.setError(null)
+
+            const data = await $fetch<IShipment[]>('/shipments', {
+                ...apiClient()
             })
 
-            if (data?.token) {
-                authStore.setToken(data.token)
-                router.push('/')
-            }
+            shipmentStore.setShipments(data)
 
-            return{ success: true, data}
-
-        } catch (error : any) {
             return {
-                success: false,
-                error: error?.data?.message || "Unauthorized"
+                data,
+                error: null
             }
+        } catch (error: any) {
+            const errorMessage = error.data?.message || error.message || 'Failed to fetch shipments'
+            shipmentStore.setError(errorMessage)
+            
+            return {
+                data: null,
+                error: errorMessage
+            }
+        } finally {
+            shipmentStore.setPending(false)
         }
     }
 
-    //logout
-    function logout(){
-        authStore.clearToken()
-        router.push('/auth/login')
+    async function getShipmentById(trackingId:string) {
+        try {
+            shipmentStore.setPending(true)
+            shipmentStore.setError(null)
+
+            const data = await $fetch<ITrackingShipment>(`/shipments/${trackingId}`, {
+                ...apiClient()
+            })
+
+            shipmentStore.setTrackingShipment(data)
+
+            return{
+                data,
+                error: null
+            }
+
+        } catch (error: any) {
+            const errorMessage = error.data?.message || error.message || 'Failed to fetch shipments by Id'
+            return {
+                data: null,
+                error : errorMessage
+            }
+        } finally{
+            shipmentStore.setPending(false)
+        }
+    }
+
+    async function createShipment(shipment: Omit<IShipment, 'trackingId' | 'userId'> ) {
+        try {
+            shipmentStore.setPending(true)
+            shipmentStore.setError(null)
+
+            const data = await $fetch<IShipmentResponse >('/shipments', {
+                ...apiClient(),
+                method: 'POST',
+                body: shipment
+            })
+
+            shipmentStore.addShipment(data.shipment)
+
+            return {
+                data,
+                error: null
+            }
+
+        } catch (error: any) {
+            const errorMessage = error.data?.message || error.message || 'Failed to add shipments'
+            shipmentStore.setError(errorMessage)
+            
+            return {
+                data: null,
+                error: errorMessage
+            }
+        } finally {
+            shipmentStore.setPending(false)
+        }
+    }
+
+    async function updateShipment(trackingId: string, shipment: Omit<IShipment, 'trackingId' | 'userId'> ) {
+        try {
+            shipmentStore.setPending(true)
+            shipmentStore.setError(null)
+
+            const data = await $fetch <IShipmentResponse>( `/shipments/${trackingId}` , {
+                ...apiClient(),
+                method: 'PATCH',
+                body: shipment
+            })
+
+            shipmentStore.updateShipment(trackingId, data.shipment)
+
+            return {
+                data,
+                error: null
+            }
+
+
+        } catch (error: any) {
+            const errorMessage = error.data?.message || error.message || 'Failed to update shipments'
+            shipmentStore.setError(errorMessage)
+            
+            return {
+                data: null,
+                error: errorMessage
+            }
+        } finally {
+            shipmentStore.setPending(false)
+        }
+    }
+
+    async function deleteShipment(trackingId:string) {
+        try {
+            shipmentStore.setPending(true)
+            shipmentStore.setError(null)
+
+            const data = await $fetch <IShipmentResponse>( `/shipments/${trackingId}` , {
+                ...apiClient(),
+                method: 'DELETE',
+            })
+
+            shipmentStore.deleteShipment(trackingId)
+
+            return {
+                data,
+                error: null
+            }
+            
+        } catch (error: any) {
+            const errorMessage = error.data?.message || error.message || 'Failed to delete shipment'
+            shipmentStore.setError(errorMessage)
+            
+            return {
+                data: null,
+                error: errorMessage
+            }
+        } finally {
+            shipmentStore.setPending(false)
+        }
     }
 
     return {
-        login,
-        logout,
-        isAuthenticated: computed(() => authStore.isAuthenticated)
+        getAllShipment,
+        getShipmentById,
+        createShipment,
+        updateShipment,
+        deleteShipment
     }
 }

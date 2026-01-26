@@ -16,7 +16,7 @@ export const apiClient = () => {
 
     // return object ready for $fetch
     return {
-        apiURL: config.public.apiURL,
+        baseURL: config.public.baseURL,
         headers
     }
 }

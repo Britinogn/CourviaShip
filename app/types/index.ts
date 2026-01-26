@@ -124,10 +124,43 @@ export interface ITrackingLocation {
 
 export interface AuthResponse {
     message: string 
-    token: string 
+    token: string
+    user: {  
+        email: string
+        username?: string
+    }
 }
-
 export interface IShipmentResponse {
     message: string
     shipment : IShipment
+}
+
+// Dashboard Types
+export interface StatusCount {
+    _id: string
+    count: number
+}
+
+export interface CountryCount {
+    _id: string
+    count: number
+}
+
+export interface TimePeriodCount {
+    _id: string
+    count: number
+}
+
+export interface Route {
+    route: string
+    count: number
+}
+
+export interface DashboardOverview {
+    totalShipments: number
+    statusBreakdown: StatusCount[]
+    recentShipments: IShipment[]
+    shipmentsByCountry: CountryCount[]
+    shipmentsByTimePeriod: TimePeriodCount[]
+    popularRoutes: Route[]
 }

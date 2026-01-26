@@ -31,6 +31,18 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = newToken
     }
 
+    const setUser = (newUser: { email: string, username?: string }) => { 
+        user.value = newUser
+    }
+
+    const setPending = (value: boolean) => {
+        pending.value = value
+    }
+
+    const setError = (message: string | null) => {
+        error.value = message
+    }
+
     const clearToken = () => {
         token.value = null
         user.value = null
@@ -45,7 +57,10 @@ export const useAuthStore = defineStore('auth', () => {
         error,
         isAuthenticated,
         setToken,
-        clearToken
+        clearToken,
+        setUser,
+        setPending,
+        setError
     }
 
 })
