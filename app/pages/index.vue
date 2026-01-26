@@ -1,0 +1,3 @@
+<template>
+    <PagesDashboard/>
+</template>

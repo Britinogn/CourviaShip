@@ -5,6 +5,7 @@ import { apiClient } from "~/utils/api";
 export function useAuth() {
     const authStore = useAuthStore()
     const router = useRouter()
+    const toast = useToast() 
 
     // --- Signup ---
     async function signup(username: string, email: string, password: string) {
@@ -21,14 +22,16 @@ export function useAuth() {
             // Auto-login after signup
             if (data?.token) {
                 authStore.setToken(data.token)
-                authStore.setUser(data.user)  // ← Don't forget user data
+                authStore.setUser(data.user)  
+                toast.success('SignUp successful!') 
                 router.push('/')
             }
 
             return { success: true, data }
         } catch (error: any) {
             const errorMessage = error?.data?.message || error.message || 'Signup failed'
-            authStore.setError(errorMessage)  // ← Set error in store
+            authStore.setError(errorMessage) 
+            toast.error(errorMessage)
             return { success: false, error: errorMessage }
         } finally {
             authStore.setPending(false)  // ← Stop loading
@@ -49,7 +52,8 @@ export function useAuth() {
 
             if (data?.token) {
                 authStore.setToken(data.token)
-                authStore.setUser(data.user)  
+                authStore.setUser(data.user)
+                toast.success('Login successful!')
                 router.push('/')
             }
 
@@ -58,6 +62,7 @@ export function useAuth() {
         } catch (error: any) {
             const errorMessage = error?.data?.message || error.message || 'Login failed'
             authStore.setError(errorMessage)
+            toast.error(errorMessage)
             return { success: false, error: errorMessage }
         } finally {
             authStore.setPending(false)
@@ -94,6 +99,7 @@ export function useAuth() {
     //logout
     function logout(){
         authStore.clearToken()
+        toast.success('Logout successful!') 
         router.push('/auth/login')
     }
 
