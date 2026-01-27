@@ -13,11 +13,13 @@ export function useAuth() {
             authStore.setPending(true)  // ← Add loading state
             authStore.setError(null)
 
-            const data = await $fetch<AuthResponse>('/signup', {
+            const response = await $fetch<AuthResponse>('/signup', {
                 ...apiClient(),
                 method: 'POST',
                 body: { username, email, password }
             })
+
+            const data = response.data || response
 
             // Auto-login after signup
             if (data?.token) {
@@ -29,7 +31,7 @@ export function useAuth() {
 
             return { success: true, data }
         } catch (error: any) {
-            const errorMessage = error?.data?.message || error.message || 'Signup failed'
+            const errorMessage = error?.data?.message || error?.message || 'Signup failed'
             authStore.setError(errorMessage) 
             toast.error(errorMessage)
             return { success: false, error: errorMessage }
@@ -44,30 +46,34 @@ export function useAuth() {
             authStore.setPending(true)
             authStore.setError(null)
 
-            const data = await $fetch<AuthResponse>('/login', {
+            const response  = await $fetch<AuthResponse>('/auth/login', {
                 ...apiClient(),
                 method: 'POST',
                 body: { email, password }
             })
 
+            // Extract data from nested response
+            const data = response.data || response
+
             if (data?.token) {
                 authStore.setToken(data.token)
                 authStore.setUser(data.user)
                 toast.success('Login successful!')
-                router.push('/')
+                router.push('/dashboard')
             }
 
             return { success: true, data }
 
         } catch (error: any) {
-            const errorMessage = error?.data?.message || error.message || 'Login failed'
+            // const errorMessage = error?.message || error.message || 'Login failed'
+            const errorMessage = error?.data?.message || error?.message || 'Login failed'
             authStore.setError(errorMessage)
             toast.error(errorMessage)
             return { success: false, error: errorMessage }
         } finally {
             authStore.setPending(false)
         }
-}
+    }
 
     /*
     
@@ -110,6 +116,7 @@ export function useAuth() {
     //fetchUser,  // ← Add this
     isAuthenticated: computed(() => authStore.isAuthenticated),
     user: computed(() => authStore.user),  // ← Useful to have
-    pending: computed(() => authStore.pending)  // ← For loading states
+    pending: computed(() => authStore.pending),  // ← For loading states
+    error: computed(() => authStore.error )
 }
 }

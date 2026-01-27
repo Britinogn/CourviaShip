@@ -123,12 +123,16 @@ export interface ITrackingLocation {
 }
 
 export interface AuthResponse {
-    message: string 
-    token: string
-    user: {  
-        email: string
-        username?: string
+    data: {
+        token: string
+        refreshToken: string
+        user: {
+            email: string
+            username?: string
+        }
     }
+    message: string
+    status: boolean
 }
 export interface IShipmentResponse {
     message: string
