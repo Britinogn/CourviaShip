@@ -11,7 +11,9 @@ export function useShipments() {
             shipmentStore.setError(null)
 
             const data = await $fetch<IShipment[]>('/shipments', {
-                ...apiClient()
+                ...apiClient(),
+                method: 'GET',
+                // body: shipment
             })
 
             shipmentStore.setShipments(data)

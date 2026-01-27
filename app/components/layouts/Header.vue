@@ -67,7 +67,7 @@
                         @click="toggleDropdown"
                         class="flex items-center gap-3 pl-3 pr-4 py-2 hover:bg-gray-50 rounded-xl transition-all border border-transparent hover:border-gray-200"
                     >
-                        <div class="w-9 h-9 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-green-100">
+                        <div class="w-9 h-9 bg-linear-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-green-100">
                             {{ userInitials }}
                         </div>
                         <div class="hidden lg:block text-left">

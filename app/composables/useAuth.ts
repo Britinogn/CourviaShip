@@ -24,7 +24,7 @@ export function useAuth() {
             // Auto-login after signup
             if (data?.token) {
                 authStore.setToken(data.token)
-                authStore.setUser(data.user)  
+                //authStore.setUser(data.user)  
                 toast.success('SignUp successful!') 
                 router.push('/')
             }
@@ -57,7 +57,7 @@ export function useAuth() {
 
             if (data?.token) {
                 authStore.setToken(data.token)
-                authStore.setUser(data.user)
+                //authStore.setUser(data.user)
                 toast.success('Login successful!')
                 router.push('/dashboard')
             }

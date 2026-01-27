@@ -9,7 +9,7 @@
 
         <!-- Sidebar -->
             <aside
-            class="fixed inset-y-0 left-0 top-0 z-50 w-72 bg-gradient-to-b from-green-600 to-green-700 min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl"
+            class="fixed inset-y-0 left-0 top-0 z-50 w-72 bg-linear-to-b from-green-600 to-green-700 min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl"
             :class="{ 'translate-x-0': isOpen, '-translate-x-full lg:translate-x-0': !isOpen }"
             >
             <!-- Logo Section -->
@@ -42,7 +42,7 @@
             <!-- User Profile Section -->
             <div class="px-6 py-5 border-b border-green-500/30">
                 <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl p-3 hover:bg-white/15 transition-all cursor-pointer">
-                <div class="w-14 h-14 bg-gradient-to-br from-green-400 to-green-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg ring-4 ring-white/20">
+                <div class="w-14 h-14 bg-linear-to-br from-green-400 to-green-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg ring-4 ring-white/20">
                     {{ userInitials }}
                 </div>
                 <div class="flex-1 min-w-0">

@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-                <p class="text-gray-600 mt-2">Welcome back! Here's your shipment overview.</p>
+                <p class="text-gray-600 mt-2">Welcome back {{ appName }} ! Here's your shipment overview.</p>
             </div>
 
             <!-- Stats Cards -->
@@ -167,6 +167,8 @@
 </template>
 
 <script setup lang="ts">
+import {appName, appNameShort, setAppName} from '../../utils/appName'
+
 definePageMeta({ middleware: 'auth' })
 
 const dashboardStore = useDashboardStore()
