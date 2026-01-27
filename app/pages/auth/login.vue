@@ -107,6 +107,7 @@ const handleLogin = async () => {
     
     const result = await login(email.value, password.value)
     
+    
     console.log('Login result:', result)
 }
 </script>

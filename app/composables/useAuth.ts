@@ -65,10 +65,20 @@ export function useAuth() {
             return { success: true, data }
 
         } catch (error: any) {
-            // const errorMessage = error?.message || error.message || 'Login failed'
-            const errorMessage = error?.data?.message || error?.message || 'Login failed'
+            let errorMessage = 'Unable to sign in. Please try again.'
+
+            // Backend returned a structured error
+            if (error?.data?.message) {
+                errorMessage = error.data.message
+            }
+            // Network / server unreachable
+            else if (error?.name === 'FetchError') {
+                errorMessage = 'Cannot connect to the server. Please check your connection.'
+            }
+
             authStore.setError(errorMessage)
             toast.error(errorMessage)
+
             return { success: false, error: errorMessage }
         } finally {
             authStore.setPending(false)

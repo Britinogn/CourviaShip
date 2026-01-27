@@ -12,6 +12,10 @@
 
 
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth',
+    layout: 'dashboard' 
+})
 
 const router = useRouter()
 const { logout } = useAuth()
