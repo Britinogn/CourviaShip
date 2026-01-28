@@ -1,3 +1,8 @@
 <template>
-    <PagesDashboard/>
+    <!-- <PagesDashboard/> -->
+    <PagesHeroSection/>
+    <PagesStatsSection/>
+    <PagesAboutSection/>
+    <PagesServicesSection/>
+    <PagesTestimonialsSection/>
 </template>

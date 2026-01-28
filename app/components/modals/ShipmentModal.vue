@@ -2,7 +2,7 @@
   <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto backdrop-blur-sm top-16 left-0 bottom-0 right-0 z-50">
     <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh] flex flex-col border border-gray-200">
       <!-- Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-green-100">
+      <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-linear-to-r from-green-50 to-green-100">
         <h2 class="text-2xl font-bold text-black">
           {{ isEdit ? "Edit Shipment" : "Create New Shipment" }}
         </h2>

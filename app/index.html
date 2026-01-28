@@ -1,0 +1,317 @@
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <section class="bg-green-600 text-white py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-5xl font-bold mb-4">Track Your Shipment</h1>
+          <p class="text-xl text-green-50">
+            Enter your tracking number to get real-time updates on your package
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tracking Form -->
+    <section class="py-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-white rounded-2xl shadow-xl p-8">
+            <form @submit.prevent="handleTrack" class="space-y-6">
+              <div>
+                <label for="trackingId" class="block text-sm font-semibold text-gray-700 mb-2">
+                  Tracking Number
+                </label>
+                <input
+                  id="trackingId"
+                  v-model="trackingId"
+                  type="text"
+                  required
+                  placeholder="Enter your tracking number (e.g., CVS123456789)"
+                  class="w-full px-4 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                />
+                <p class="mt-2 text-sm text-gray-500">
+                  Your tracking number can be found in your confirmation email
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                :disabled="isTracking || !trackingId.trim()"
+                class="w-full bg-green-600 text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              >
+                <svg v-if="isTracking" class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>{{ isTracking ? 'Tracking...' : 'Track Shipment' }}</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Sample Tracking Numbers -->
+          <div class="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-600 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h3 class="font-semibold text-blue-900 mb-2">Need help finding your tracking number?</h3>
+                <p class="text-sm text-blue-800">
+                  Check your confirmation email or contact our support team at 
+                  <a href="mailto:support@courviaship.com" class="underline font-semibold">support@courviaship.com</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tracking Results -->
+    <section v-if="shipment" class="py-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto space-y-6">
+          <!-- Shipment Info Card -->
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-gray-900">Shipment Details</h2>
+              <span 
+                class="px-4 py-2 rounded-full text-sm font-bold"
+                :class="getStatusClass(shipment.status)"
+              >
+                {{ shipment.status || 'Unknown' }}
+              </span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Tracking Number -->
+              <div>
+                <p class="text-sm font-semibold text-gray-500 mb-1">Tracking Number</p>
+                <p class="text-lg font-mono font-bold text-gray-900">{{ shipment.trackingId || 'N/A' }}</p>
+              </div>
+
+              <!-- Estimated Delivery -->
+              <div>
+                <p class="text-sm font-semibold text-gray-500 mb-1">Estimated Delivery</p>
+                <p class="text-lg font-bold text-gray-900">
+                  {{ shipment.estimatedDelivery ? formatDate(shipment.estimatedDelivery) : 'N/A' }}
+                </p>
+              </div>
+
+              <!-- Origin -->
+              <div>
+                <p class="text-sm font-semibold text-gray-500 mb-1">From</p>
+                <p class="text-lg text-gray-900">
+                  {{ shipment.sender?.name || 'N/A' }}<br>
+                  {{ shipment.sender?.city || 'N/A' }}, {{ shipment.sender?.country || 'N/A' }}
+                </p>
+              </div>
+
+              <!-- Destination -->
+              <div>
+                <p class="text-sm font-semibold text-gray-500 mb-1">To</p>
+                <p class="text-lg text-gray-900">
+                  {{ shipment.receiver?.name || 'N/A' }}<br>
+                  {{ shipment.receiver?.city || 'N/A' }}, {{ shipment.receiver?.country || 'N/A' }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Location -->
+          <div v-if="shipment.currentLocation" class="bg-green-50 border-2 border-green-200 rounded-2xl p-8">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-green-900 mb-2">Current Location</h3>
+                <p class="text-green-800">
+                  {{ shipment.currentLocation.city || 'N/A' }}, {{ shipment.currentLocation.country || 'N/A' }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Track Another -->
+          <div class="text-center">
+            <button
+              @click="resetTracking"
+              class="px-8 py-3 bg-black text-white rounded-xl font-semibold hover:bg-gray-900 transition-colors"
+            >
+              Track Another Shipment
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error Message -->
+    <section v-if="error" class="py-12">
+      <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-8 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-red-900 mb-2">Shipment Not Found</h3>
+            <p class="text-red-700 mb-6">{{ error }}</p>
+            <button
+              @click="resetTracking"
+              class="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How Tracking Works -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">How {{ appName }} Tracking Works</h2>
+            <p class="text-xl text-gray-600">Stay informed every step of the way</p>
+          </div>
+
+          <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">1</span>
+              </div>
+              <h3 class="font-bold text-gray-900 mb-2">Shipment Created</h3>
+              <p class="text-sm text-gray-600">Your tracking number is generated when your shipment is registered</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">2</span>
+              </div>
+              <h3 class="font-bold text-gray-900 mb-2">Real-Time Updates</h3>
+              <p class="text-sm text-gray-600">Get instant notifications as your package moves through our network</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">3</span>
+              </div>
+              <h3 class="font-bold text-gray-900 mb-2">Live Location</h3>
+              <p class="text-sm text-gray-600">Track your package's current location and estimated delivery time</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">4</span>
+              </div>
+              <h3 class="font-bold text-gray-900 mb-2">Delivery Confirmed</h3>
+              <p class="text-sm text-gray-600">Receive confirmation when your package is safely delivered</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useTracking } from '@/composables/useTracking'
+import type { ITrackingShipment } from '~/types'
+
+const { trackShipment } = useTracking()
+const toast = useToast()
+
+const trackingId = ref<string>('')
+const isTracking = ref(false)
+const error = ref<string | null>(null)
+const shipment = ref<ITrackingShipment | null>(null)
+
+const handleTrack = async () => {
+  if (!trackingId.value.trim()) {
+    error.value = 'Please enter a tracking number'
+    toast.error('Tracking number required')
+    return
+  }
+
+  console.log('[TRACK] Starting for ID:', trackingId.value)
+  isTracking.value = true
+  error.value = null
+  shipment.value = null
+
+  try {
+    console.log('[TRACK] Calling API...')
+    const { data, error: trackError } = await trackShipment(trackingId.value)
+    console.log('[TRACK] Response:', { data, trackError })
+
+    if (trackError) {
+      console.warn('[TRACK] Composable error:', trackError)
+      error.value = trackError
+      toast.error(trackError)
+      return
+    }
+
+    if (!data) {
+      console.warn('[TRACK] No data returned from API')
+      error.value = 'No shipment found'
+      toast.warning('No results')
+      return
+    }
+
+    console.log('[TRACK] Setting shipment:', data)
+    shipment.value = data
+    toast.success('Shipment found!')
+  } catch (err: any) {
+    console.error('[TRACK] Unexpected error:', err)
+    error.value = err.message || 'Something went wrong. Please try again.'
+    toast.error('Tracking failed')
+  } finally {
+    console.log('[TRACK] Finished - isTracking:', isTracking.value)
+    isTracking.value = false
+  }
+}
+
+const resetTracking = () => {
+  trackingId.value = ''
+  shipment.value = null
+  error.value = null
+}
+
+const formatDate = (date: Date | string) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const getStatusClass = (status: string) => {
+  const classes: Record<string, string> = {
+    Registered: 'bg-gray-100 text-gray-800',
+    PickedUp: 'bg-blue-100 text-blue-800',
+    InTransit: 'bg-purple-100 text-purple-800',
+    EnRoute: 'bg-indigo-100 text-indigo-800',
+    InCustoms: 'bg-yellow-100 text-yellow-800',
+    AtHub: 'bg-orange-100 text-orange-800',
+    OutForDelivery: 'bg-green-100 text-green-800',
+    Delivered: 'bg-green-600 text-white',
+    Delayed: 'bg-red-100 text-red-800',
+    Cancelled: 'bg-gray-600 text-white',
+    Exception: 'bg-red-600 text-white'
+  }
+  return classes[status] || 'bg-gray-100 text-gray-800'
+}
+
+useSeoMeta({
+  title: `Track Shipment - ${appName}`,
+  description: `Track your ${appName} shipment in real-time. Enter your tracking number to get live updates on your package location and delivery status.`
+})
+</script>

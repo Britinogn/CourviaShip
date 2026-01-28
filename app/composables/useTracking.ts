@@ -10,14 +10,23 @@ export function useTracking() {
             trackingStore.setPending(true)
             trackingStore.setError(null)
 
-            const data = await $fetch<ITrackingShipment>(`/tracking/${trackingId}`, {
+            const response = await $fetch<any>(`/tracking/${trackingId}`, {
                 ...apiClient()
             })
 
-            trackingStore.setTrackingShipment(data)
+            // Backend returns { success, data: { ... actual shipment } }
+            if (!response.success || !response.data) {
+                throw new Error(response.message || 'No shipment found')
+            }
+
+            // Extract the inner data object
+            const shipmentData = response.data
+
+            // Optional: Validate shape if you want strict typing
+            trackingStore.setTrackingShipment(shipmentData as ITrackingShipment)
 
             return {
-                data,
+                data: shipmentData,
                 error: null
             }
 
