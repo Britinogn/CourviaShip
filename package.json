@@ -25,6 +25,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@types/country-list": "^2.1.4",
+    "@types/node": "^25.1.0",
     "tailwindcss": "^4.1.18",
     "vue-tsc": "^3.2.4"
   }

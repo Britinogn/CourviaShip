@@ -119,7 +119,7 @@ async function fetchShipments() {
   isLoading.value = true
   try {
     const { data } = await getAllShipment()
-    shipments.value = data
+    // shipments.value = data
   } finally {
     isLoading.value = false
   }

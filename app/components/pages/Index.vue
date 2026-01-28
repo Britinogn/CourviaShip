@@ -146,7 +146,8 @@
 <script setup lang="ts">
 const appName = ref('CourviaShip')
 const currentSlide = ref(0)
-let intervalId: NodeJS.Timeout | null = null
+// let intervalId: NodeJS.Timeout | null = null
+let intervalId: ReturnType<typeof setInterval> | null = null
 
 const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % 3
