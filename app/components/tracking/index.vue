@@ -240,7 +240,7 @@ import type { ITrackingShipment } from '~/types'
 import { ShipmentStatus } from '~/types'
 import { ref } from 'vue'
 import { useTracking } from '@/composables/useTracking' 
-import {appName} from '@/utils/appName'
+// import {appName} from '@/utils/appName'
 
 
 const { trackShipment } = useTracking()
@@ -284,14 +284,6 @@ const handleTrack = async () => {
     isTracking.value = false
   }
 }
-
-
-
-
-
-
-
-
 
 
 const resetTracking = () => {
@@ -366,9 +358,18 @@ const getStatusClass = (status: ShipmentStatus): string => {
   }
 }
 
+const appName = 'CourviaShip'
 
 useSeoMeta({
   title: `Track Shipment - ${appName}`,
   description: `Track your ${appName} shipment in real-time. Enter your tracking number to get live updates on your package location and delivery status.`
 })
 </script>
+
+<!-- import { useSeo } from '~/composables/useSeo'
+
+useSeo({
+  title: 'Track Shipment',
+  description: 'Real-time tracking for your CourviaShip packages. Enter your tracking number to see status, location, and estimated delivery.',
+  // image: '/tracking-og.jpg' // optional override
+}) -->

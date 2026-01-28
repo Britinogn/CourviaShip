@@ -22,3 +22,9 @@
 <script setup lang="ts">
 
 </script> -->
+
+<script setup lang="ts">
+import { useSeo } from '~/composables/useSeo'
+
+useSeo() // applies global defaults
+</script>
