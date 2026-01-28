@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen pt-20 bg-gray-50">
     <!-- Hero Section -->
     <section class="bg-green-600 text-white py-16">
       <div class="container mx-auto px-4">
@@ -38,7 +38,7 @@
               <button
                 type="submit"
                 :disabled="isTracking || !trackingId"
-                class="w-full bg-green-600 text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                class="w-full bg-green-600 cursor-pointer text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
                 <svg v-if="isTracking" class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -99,7 +99,7 @@
                 <!-- Estimated Delivery -->
                 <div class="space-y-2">
                   <p class="text-sm font-bold text-gray-700 uppercase tracking-wide">Estimated Delivery</p>
-                  <p class="text-2xl font-semibold text-gray-900">
+                  <p class="text-2xl font-mono font-bold text-gray-900">
                     {{ shipment.estimatedDelivery ? formatDate(shipment.estimatedDelivery) : 'N/A' }}
                   </p>
                 </div>
@@ -154,7 +154,7 @@
           <div class="text-center mt-12">
             <button
               @click="resetTracking"
-              class="px-10 py-4 bg-black text-white rounded-xl font-bold text-lg hover:bg-gray-900 transition-colors shadow-lg"
+              class="px-10 py-4 cursor-pointer bg-black text-white rounded-xl font-bold text-lg hover:bg-gray-900 transition-colors shadow-lg"
             >
               Track Another Shipment
             </button>
@@ -240,6 +240,7 @@ import type { ITrackingShipment } from '~/types'
 import { ShipmentStatus } from '~/types'
 import { ref } from 'vue'
 import { useTracking } from '@/composables/useTracking' 
+import {appName} from '@/utils/appName'
 
 
 const { trackShipment } = useTracking()

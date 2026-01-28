@@ -1,5 +1,5 @@
 <template>
-  <section class="py-20 bg-white">
+  <section class="py-20  bg-white">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <!-- Left: Image -->
@@ -44,5 +44,5 @@
 </template>
 
 <script setup lang="ts">
-const appName = ref('CourviaShip')
+// const appName = ref('CourviaShip')
 </script>

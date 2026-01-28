@@ -29,9 +29,14 @@
                 <button class="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all shadow-lg">
                   Get Started
                 </button>
-                <button class="px-8 py-4 bg-white hover:bg-gray-100 text-black font-semibold rounded-lg transition-all shadow-lg">
+
+                <NuxtLink 
+                  to="/tracking"  
+                  class="px-8 py-4 bg-white hover:bg-gray-100 text-black font-semibold rounded-lg transition-all shadow-lg"               
+                >
                   Track Shipment
-                </button>
+                </NuxtLink>
+
               </div>
             </div>
           </div>
@@ -62,12 +67,21 @@
                 Experience hassle-free shipping with real-time tracking and instant notifications.
               </p>
               <div class="flex gap-4 justify-center">
-                <button class="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all shadow-lg">
+
+                <NuxtLink 
+                  to="/services"  
+                  class="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all shadow-lg"
+                >
                   Our Services
-                </button>
-                <button class="px-8 py-4 bg-white hover:bg-gray-100 text-black font-semibold rounded-lg transition-all shadow-lg">
+                </NuxtLink>
+
+                <NuxtLink 
+                  to="/about"  
+                  class="px-8 py-4 bg-white hover:bg-gray-100 text-black font-semibold rounded-lg transition-all shadow-lg"               
+                >
                   Learn More
-                </button>
+                </NuxtLink>
+
               </div>
             </div>
           </div>
@@ -128,19 +142,19 @@
     <!-- Navigation Arrows -->
     <button
       @click="prevSlide"
-      class="absolute left-8 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all"
+      class="absolute cursor-pointer left-8 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all"
       aria-label="Previous slide"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 text-black h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
     <button
       @click="nextSlide"
-      class="absolute right-8 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all"
+      class="absolute cursor-pointer right-8 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all"
       aria-label="Next slide"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 text-black h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
     </button>
