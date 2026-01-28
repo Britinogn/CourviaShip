@@ -2,8 +2,8 @@
 import tailwindcss from "@tailwindcss/vite";
 
 
-//const API_BASE_URL = process.env.NUXT_PUBLIC_API_BASE || 'https://rest-api-go-bnnn.onrender.com'
-const API_BASE_URL = process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:5000/api'
+const API_BASE_URL = process.env.NUXT_PUBLIC_API_BASE || 'https://courviashipapi.onrender.com/api'
+//const API_BASE_URL = process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:5000/api'
 
 
 export default defineNuxtConfig({
