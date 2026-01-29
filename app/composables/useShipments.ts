@@ -187,11 +187,33 @@ export function useShipments() {
     }
   }
 
+
+  async function getShipmentAdminByTrackingId(trackingId: string) {
+  try {
+    shipmentStore.setPending(true)
+    shipmentStore.setError(null)
+
+    const response = await $fetch<IShipment>(`/shipments/admin/${trackingId}`, {
+      ...apiClient(),
+      method: 'GET'
+    })
+
+    return { data: response, error: null }
+  } catch (error: any) {
+    const message = error.data?.message || error.message || 'Failed to load shipment'
+    return { data: null, error: message }
+  } finally {
+    shipmentStore.setPending(false)
+  }
+}
+
+
   return {
     getAllShipment,
     getShipmentById,
     createShipment,
     updateShipment,
-    deleteShipment
+    deleteShipment,
+    getShipmentAdminByTrackingId
   };
 }

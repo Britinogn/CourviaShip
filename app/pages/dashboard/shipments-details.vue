@@ -234,13 +234,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useShipments } from '@/composables/useShipments'
 import type { IShipment } from '@/types'
 
 const route = useRoute()
-const router = useRouter()
-const { getShipmentById } = useShipments()
+//const router = useRouter()
+const { getShipmentAdminByTrackingId } = useShipments()
 
 const shipment = ref<IShipment | null>(null)
 const isLoading = ref(true)
@@ -256,7 +256,7 @@ onMounted(async () => {
   }
 
   try {
-    const { data, error: fetchError } = await getShipmentById(trackingId)
+    const { data, error: fetchError } = await getShipmentAdminByTrackingId(trackingId)
     
     if (fetchError || !data) {
       error.value = fetchError || 'Failed to load shipment'
