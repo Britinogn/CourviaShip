@@ -233,6 +233,13 @@
 </template>
 
 <script setup lang="ts">
+
+
+definePageMeta({
+    middleware: 'auth',
+    layout: 'dashboard' 
+})
+
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useShipments } from '@/composables/useShipments'
