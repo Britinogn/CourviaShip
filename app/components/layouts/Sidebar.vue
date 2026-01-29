@@ -161,6 +161,8 @@ const navItems: NavItem[] = [
     { name: 'Dashboard', path: '/dashboard', icon: HomeIcon },
     { name: 'Shipments', path: '/dashboard/shipments', icon: ShipIcon },
     { name: 'Tracking', path: '/dashboard/tracking', icon: LocateIcon },
+    { name: 'Shipment Details', path: '/dashboard/shipments-details', icon: ShipIcon }, 
+
     // { name: 'Analytics', path: '/dashboard/analytics', icon: ChartArea },
     // { name: 'Settings', path: '/dashboard/settings', icon: Settings },
 ]

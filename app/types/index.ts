@@ -137,6 +137,7 @@ export interface AuthResponse {
 export interface IShipmentResponse {
     message: string
     shipment : IShipment
+    receiptPdf?: string;
 }
 
 // Dashboard Types

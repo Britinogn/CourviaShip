@@ -75,16 +75,44 @@ export function useShipments() {
       shipmentStore.setPending(true);
       shipmentStore.setError(null);
 
-      const response = await $fetch<IShipmentResponse>('/shipments', {
+      const response = await $fetch<any>('/shipments', {
         ...apiClient(),
         method: 'POST',
-        body: payload  // Send JSON directly
+        body: payload
       });
 
-      shipmentStore.addShipment(response.shipment);
+      // Extract shipment and PDF from response
+      const shipment = response.data?.shipment || response.shipment;
+      const receiptPdf = response.data?.receiptPdf || response.receiptPdf;
+
+      // Convert PDF buffer to blob URL if it exists
+      let pdfBlobUrl = '';
+      if (receiptPdf) {
+        // If receiptPdf is base64 string
+        if (typeof receiptPdf === 'string') {
+          const byteCharacters = atob(receiptPdf);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'application/pdf' });
+          pdfBlobUrl = URL.createObjectURL(blob);
+        }
+        // If receiptPdf is already an array buffer
+        else if (receiptPdf.data) {
+          const blob = new Blob([new Uint8Array(receiptPdf.data)], { type: 'application/pdf' });
+          pdfBlobUrl = URL.createObjectURL(blob);
+        }
+      }
+
+      shipmentStore.addShipment(shipment);
 
       return {
-        data: response,
+        data: {
+          shipment,
+          receiptPdf: pdfBlobUrl
+        },
         error: null
       };
     } catch (error: any) {
@@ -107,8 +135,8 @@ export function useShipments() {
 
       const response = await $fetch<IShipmentResponse>(`/shipments/${trackingId}`, {
         ...apiClient(),
-        method: 'PATCH', 
-        body: payload 
+        method: 'PATCH', // or PUT - match your backend
+        body: payload  // Send JSON directly
       });
 
       shipmentStore.updateShipment(trackingId, response.shipment);
