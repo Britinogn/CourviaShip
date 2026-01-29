@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
 
         <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
@@ -8,6 +8,10 @@
             Logout
         </button>
     </div>
+</template> -->
+
+<template>
+    <DashboardTracking />
 </template>
 
 

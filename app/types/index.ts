@@ -169,6 +169,16 @@ export interface DashboardOverview {
     popularRoutes: Route[]
 }
 
+// export interface DashboardOverview {
+//   totalShipments: number
+//   shipmentsByStatus: StatusCount[]
+//   recentShipments: IShipment[]
+//   topOrigins: CountryCount[]
+//   topDestinations: CountryCount[]
+//   timePeriod: TimePeriodCount
+//   popularRoutes: Route[]
+// }
+
 
 //toast notifications
 

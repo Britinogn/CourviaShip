@@ -253,13 +253,14 @@ function closeModal() {
   selectedShipment.value = null
 }
 
-async function handleSave(fd: FormData) {
+async function handleSave(payload: any) {  // Changed from fd: FormData to payload: any
   try {
-    if (selectedShipment.value?._id) {
-      const { error } = await updateShipment(selectedShipment.value._id, fd)
+    if (selectedShipment.value?.trackingId) {
+      // Use trackingId for updates instead of _id
+      const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
       if (error) throw new Error(error)
     } else {
-      const { error } = await createShipment(fd)
+      const { error } = await createShipment(payload)
       if (error) throw new Error(error)
     }
     await fetchShipments()
@@ -276,9 +277,10 @@ function confirmDelete(shipment: IShipment) {
 }
 
 async function handleDelete() {
-  if (!shipmentToDelete.value?._id) return
+  if (!shipmentToDelete.value?.trackingId) return
   try {
-    const { error } = await deleteShipment(shipmentToDelete.value._id)
+    // Use trackingId for deletion
+    const { error } = await deleteShipment(shipmentToDelete.value.trackingId)
     if (error) throw new Error(error)
     await fetchShipments()
   } catch (err) {

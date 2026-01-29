@@ -281,7 +281,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: []
-  save: [formData: FormData]
+  save: [payload: any]  // Changed from FormData to any (will be JSON object)
 }>()
 
 const isEdit = computed(() => !!props.shipment)
@@ -387,17 +387,19 @@ const handleSubmit = async () => {
 
   isLoading.value = true
 
-  const fd = new FormData()
-  fd.append('trackingId', formData.value.trackingId || `SHIP-${Date.now().toString().slice(-8)}`)
-  fd.append('sender', JSON.stringify(formData.value.sender))
-  fd.append('receiver', JSON.stringify(formData.value.receiver))
-  fd.append('package', JSON.stringify(formData.value.package))
-  fd.append('origin', JSON.stringify(formData.value.origin))
-  fd.append('destination', JSON.stringify(formData.value.destination))
-  fd.append('status', formData.value.status!)
-  fd.append('estimatedDelivery', new Date(estimatedDeliveryString.value).toISOString())
+  // Create proper JSON payload instead of FormData
+  const payload = {
+    trackingId: formData.value.trackingId || `SHIP-${Date.now().toString().slice(-8)}`,
+    sender: formData.value.sender,
+    receiver: formData.value.receiver,
+    package: formData.value.package,
+    origin: formData.value.origin,
+    destination: formData.value.destination,
+    status: formData.value.status,
+    estimatedDelivery: new Date(estimatedDeliveryString.value).toISOString()
+  }
 
-  emit('save', fd)
+  emit('save', payload)
   emit('close')
   isLoading.value = false
 }

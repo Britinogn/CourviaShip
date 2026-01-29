@@ -13,7 +13,7 @@ export function useDashboard() {
       dashboardStore.setPending(true);
       dashboardStore.setError(null);
 
-      const data = await $fetch<DashboardOverview>('/dashboard/overview', {
+      const data = await $fetch<any>('/dashboard', {
         ...apiClient(),
         method: 'GET',
       });

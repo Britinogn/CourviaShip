@@ -70,7 +70,7 @@ export function useShipments() {
     }
   }
 
-  async function createShipment(fd: FormData) {
+  async function createShipment(payload: any) {
     try {
       shipmentStore.setPending(true);
       shipmentStore.setError(null);
@@ -78,7 +78,7 @@ export function useShipments() {
       const response = await $fetch<IShipmentResponse>('/shipments', {
         ...apiClient(),
         method: 'POST',
-        body: fd
+        body: payload  // Send JSON directly
       });
 
       shipmentStore.addShipment(response.shipment);
@@ -100,7 +100,7 @@ export function useShipments() {
     }
   }
 
-  async function updateShipment(trackingId: string, fd: FormData) {
+  async function updateShipment(trackingId: string, payload: any) {
     try {
       shipmentStore.setPending(true);
       shipmentStore.setError(null);
@@ -108,7 +108,7 @@ export function useShipments() {
       const response = await $fetch<IShipmentResponse>(`/shipments/${trackingId}`, {
         ...apiClient(),
         method: 'PATCH', // or PUT - match your backend
-        body: fd
+        body: payload  // Send JSON directly
       });
 
       shipmentStore.updateShipment(trackingId, response.shipment);
