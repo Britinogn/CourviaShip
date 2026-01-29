@@ -107,8 +107,8 @@ export function useShipments() {
 
       const response = await $fetch<IShipmentResponse>(`/shipments/${trackingId}`, {
         ...apiClient(),
-        method: 'PATCH', // or PUT - match your backend
-        body: payload  // Send JSON directly
+        method: 'PATCH', 
+        body: payload 
       });
 
       shipmentStore.updateShipment(trackingId, response.shipment);

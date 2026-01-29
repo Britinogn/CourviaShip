@@ -33,10 +33,16 @@
             <p class="text-sm text-green-700 font-medium mb-1">Delivered</p>
             <p class="text-3xl font-bold text-green-600">{{ deliveredCount }}</p>
           </div>
-          <div class="bg-orange-50 rounded-xl p-4 border border-orange-100">
-            <p class="text-sm text-orange-700 font-medium mb-1">Pending</p>
-            <!-- <p class="text-3xl font-bold text-orange-600">{{ pendingCount }}</p> -->
+
+          <div class="bg-yellow-50 rounded-xl p-4 border border-green-100">
+            <p class="text-sm text-yellow-700 font-medium mb-1"> Incustom</p>
+            <p class="text-3xl font-bold text-yellow-600">{{ IncustomCount }}</p>
           </div>
+
+          <!-- <div class="bg-orange-50 rounded-xl p-4 border border-orange-100">
+            <p class="text-sm text-orange-700 font-medium mb-1">Pending</p>
+            <p class="text-3xl font-bold text-orange-600">{{ pendingCount }}</p>
+          </div> -->
         </div>
       </div>
 
@@ -218,6 +224,9 @@ const inTransitCount = computed(() =>
 const deliveredCount = computed(() => 
   shipments.value.filter(s => s.status === 'Delivered').length
 )
+const IncustomCount = computed(() => 
+  shipments.value.filter(s => s.status === 'InCustoms').length
+)
 // const pendingCount = computed(() => 
 //   shipments.value.filter(s => s.status === 'Pending').length
 // )
@@ -253,22 +262,21 @@ function closeModal() {
   selectedShipment.value = null
 }
 
-async function handleSave(payload: any) {  // Changed from fd: FormData to payload: any
-  try {
-    if (selectedShipment.value?.trackingId) {
-      // Use trackingId for updates instead of _id
-      const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
-      if (error) throw new Error(error)
-    } else {
-      const { error } = await createShipment(payload)
-      if (error) throw new Error(error)
+async function handleSave(payload: any) { 
+    try {
+        if (selectedShipment.value?.trackingId) {
+            const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
+            if (error) throw new Error(error)
+        } else {
+            const { error } = await createShipment(payload)
+            if (error) throw new Error(error)
+        }
+        await fetchShipments()
+    } catch (err) {
+        console.error('Save failed:', err)
+    } finally {
+        closeModal()
     }
-    await fetchShipments()
-  } catch (err) {
-    console.error('Save failed:', err)
-  } finally {
-    closeModal()
-  }
 }
 
 function confirmDelete(shipment: IShipment) {

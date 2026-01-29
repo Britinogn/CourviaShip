@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 overflow-y-auto backdrop-blur-md z-50"
     @click.self="$emit('close')"
   >
-    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border-2 border-gray-100 my-8 animate-fadeIn">
+    <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border-2 border-gray-100 my-8 animate-fadeIn">
       <!-- Header -->
       <div class="flex items-center justify-between px-8 py-6 bg-black border-b-4 border-green-600">
         <div class="flex items-center gap-4">
@@ -237,6 +237,21 @@
                     {{ status }}
                   </option>
                 </select>
+
+                <!-- <select
+                  v-model="formData.status"
+                  required
+                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition"
+                >
+                  <option
+                    v-for="status in Object.values(ShipmentStatus)"
+                    :key="status"
+                    :value="status as ShipmentStatus"
+                  >
+                    {{ status }}
+                  </option>
+                </select> -->
+
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Estimated Delivery <span class="text-red-600">*</span></label>
@@ -281,7 +296,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: []
-  save: [payload: any]  // Changed from FormData to any (will be JSON object)
+  save: [payload: any]
 }>()
 
 const isEdit = computed(() => !!props.shipment)
@@ -387,15 +402,61 @@ const handleSubmit = async () => {
 
   isLoading.value = true
 
-  // Create proper JSON payload instead of FormData
+  // Create flat structure payload matching backend format
   const payload = {
-    trackingId: formData.value.trackingId || `SHIP-${Date.now().toString().slice(-8)}`,
-    sender: formData.value.sender,
-    receiver: formData.value.receiver,
-    package: formData.value.package,
-    origin: formData.value.origin,
-    destination: formData.value.destination,
-    status: formData.value.status,
+
+    // trackingId: isEdit.value
+    // ? formData.value.trackingId   // KEEP EXISTING
+    // : `SHIP-${Date.now().toString().slice(-8)}`, // CREATE ONLY
+
+
+
+    // Sender fields
+    senderName: formData.value.sender.name,
+    senderEmail: formData.value.sender.email,
+    senderPhone: formData.value.sender.phoneNumber,
+    senderAddress: formData.value.sender.address,
+    senderCity: formData.value.sender.city,
+    senderCountry: formData.value.sender.country,
+    senderZipCode: formData.value.sender.zipCode,
+    senderCompanyName: formData.value.sender.companyName,
+    senderAlternatePhone: formData.value.sender.alternatePhone,
+
+    // Receiver fields
+    receiverName: formData.value.receiver.name,
+    receiverEmail: formData.value.receiver.email,
+    receiverPhone: formData.value.receiver.phoneNumber,
+    receiverAddress: formData.value.receiver.address,
+    receiverCity: formData.value.receiver.city,
+    receiverCountry: formData.value.receiver.country,
+    receiverZipCode: formData.value.receiver.zipCode,
+    receiverCompanyName: formData.value.receiver.companyName,
+    receiverAlternatePhone: formData.value.receiver.alternatePhone,
+
+    // Package fields
+    packageWeightKg: formData.value.package.weightKg,
+    packageDimensions: formData.value.package.dimensions,
+    packageDescription: formData.value.package.description,
+    packageDeclaredValue: formData.value.package.declaredValue,
+    packageQuantity: formData.value.package.quantity,
+    packageIsFragile: formData.value.package.isFragile,
+    packageRequiresSignature: formData.value.package.requiresSignature,
+
+    // Origin fields
+    originAddress: formData.value.origin.address,
+    originCity: formData.value.origin.city,
+    originCountry: formData.value.origin.country,
+    originZipCode: formData.value.origin.zipCode,
+
+    // Destination fields
+    destinationAddress: formData.value.destination.address,
+    destinationCity: formData.value.destination.city,
+    destinationCountry: formData.value.destination.country,
+    destinationZipCode: formData.value.destination.zipCode,
+
+    status: formData.value.status as ShipmentStatus,
+
+    // Shipment details
     estimatedDelivery: new Date(estimatedDeliveryString.value).toISOString()
   }
 
