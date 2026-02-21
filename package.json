@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:tunnel": "concurrently \"nuxt dev\" \"outray 3000\"",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -26,6 +27,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@types/country-list": "^2.1.4",
     "@types/node": "^25.1.0",
+    "concurrently": "^9.2.1",
     "tailwindcss": "^4.1.18",
     "vue-tsc": "^3.2.4"
   }
