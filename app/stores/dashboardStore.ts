@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { IShipment, StatusCount, CountryCount, TimePeriodCount, Route, DashboardOverview} from '@/types'
+import type { IShipment, StatusCount, CountryCount, TimePeriod, Route, DashboardOverview} from '@/types'
 
 
 
@@ -11,7 +11,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     const statusBreakdown = ref<StatusCount[]>([])
     const recentShipments = ref<IShipment[]>([])
     const shipmentsByCountry = ref<CountryCount[]>([])
-    const shipmentsByTimePeriod = ref<TimePeriodCount[]>([])
+    const shipmentsByTimePeriod = ref<TimePeriod[]>([])
     const popularRoutes = ref<Route[]>([])
     const pending = ref(false)
     const error = ref<string | null>(null)
@@ -19,20 +19,28 @@ export const useDashboardStore = defineStore('dashboard', () => {
     // --- Computed ---
     const hasData = computed(() => !!overview.value)
     
+    // const deliveredCount = computed(() => {
+    //     return statusBreakdown.value.find(s => s._id === 'Delivered')?.count || 0
+    // })
+
+    // const inTransitCount = computed(() => {
+    //     return statusBreakdown.value.find(s => s._id === 'InTransit')?.count || 0
+    // })
+
     const deliveredCount = computed(() => {
-        return statusBreakdown.value.find(s => s._id === 'Delivered')?.count || 0
+    return statusBreakdown.value.find(s => s.status === 'Delivered')?.count || 0
     })
 
     const inTransitCount = computed(() => {
-        return statusBreakdown.value.find(s => s._id === 'InTransit')?.count || 0
+        return statusBreakdown.value.find(s => s.status === 'InTransit')?.count || 0
     })
 
     const pendingCount = computed(() => {
-        return statusBreakdown.value.find(s => s._id === 'Pending')?.count || 0
+        return statusBreakdown.value.find(s => s.status === 'Pending')?.count || 0
     })
 
     const topCountry = computed(() => {
-        return shipmentsByCountry.value[0]?._id || 'N/A'
+        return shipmentsByCountry.value[0]?.country || 'N/A'
     })
 
     const topRoute = computed(() => {
@@ -40,15 +48,24 @@ export const useDashboardStore = defineStore('dashboard', () => {
     })
 
     // --- Actions ---
-    const setOverview = (data: DashboardOverview) => {
-        overview.value = data
-        totalShipments.value = data.totalShipments
-        statusBreakdown.value = data.statusBreakdown
-        recentShipments.value = data.recentShipments
-        shipmentsByCountry.value = data.shipmentsByCountry
-        shipmentsByTimePeriod.value = data.shipmentsByTimePeriod
-        popularRoutes.value = data.popularRoutes
-    }
+    // const setOverview = (data: DashboardOverview) => {
+    //     overview.value = data
+    //     totalShipments.value = data.totalShipments
+    //     statusBreakdown.value = data.statusBreakdown
+    //     recentShipments.value = data.recentShipments
+    //     shipmentsByCountry.value = data.shipmentsByCountry
+    //     shipmentsByTimePeriod.value = data.shipmentsByTimePeriod
+    //     popularRoutes.value = data.popularRoutes
+    // }
+    const setOverview = (data: any) => {
+    overview.value = data
+    totalShipments.value = data.totalShipments
+    statusBreakdown.value = data.shipmentsByStatus    
+    recentShipments.value = data.recentShipments
+    shipmentsByCountry.value = data.topOrigins         
+    shipmentsByTimePeriod.value = data.timePeriod    
+    popularRoutes.value = data.popularRoutes
+}
 
     const setTotalShipments = (count: number) => {
         totalShipments.value = count
@@ -66,7 +83,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
         shipmentsByCountry.value = data
     }
 
-    const setShipmentsByTimePeriod = (data: TimePeriodCount[]) => {
+    const setShipmentsByTimePeriod = (data: TimePeriod[]) => {
         shipmentsByTimePeriod.value = data
     }
 

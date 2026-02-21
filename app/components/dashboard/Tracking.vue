@@ -8,8 +8,6 @@
             <h1 class="text-4xl font-bold text-black mb-2">Track Shipments</h1>
             <p class="text-gray-600 text-lg">Monitor and manage all your shipments in real-time</p>
           </div>
-          
-          <!-- Stats -->
           <div class="flex items-center gap-4">
             <div class="bg-green-50 px-6 py-3 rounded-xl border border-green-100">
               <p class="text-sm text-green-700 font-medium mb-1">Total Shipments</p>
@@ -33,19 +31,12 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          
-          <button 
+          <button
             @click="refreshShipments"
             :disabled="isRefreshing"
             class="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-all disabled:opacity-50"
           >
-            <svg 
-              class="w-5 h-5"
-              :class="{ 'animate-spin': isRefreshing }"
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-5 h-5" :class="{ 'animate-spin': isRefreshing }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
             <span>{{ isRefreshing ? 'Refreshing...' : 'Refresh' }}</span>
@@ -73,7 +64,9 @@
           v-for="shipment in filteredShipments"
           :key="shipment.trackingId"
           :shipment="shipment"
-          @delete="openDeleteModal"
+          @edit="openUpdateModal"
+          @delete="(id: string) => confirmDelete(shipments.find(s => s.trackingId === id)!)"
+
         />
       </div>
 
@@ -90,7 +83,7 @@
         <p class="text-gray-600 mb-6">
           {{ searchQuery ? 'Try adjusting your search query' : 'Your shipments will appear here once they are created' }}
         </p>
-        <button 
+        <button
           v-if="searchQuery"
           @click="searchQuery = ''"
           class="px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-all"
@@ -98,51 +91,56 @@
           Clear Search
         </button>
       </div>
-
-      <!-- Delete Confirmation Modal -->
-      <ConfirmDeleteModal
-        :open="isDeleteModalOpen"
-        :tracking-id="selectedTrackingId"
-        @cancel="closeDeleteModal"
-        @confirm="handleDeleteConfirm"
-      />
     </div>
+
+    <!-- Modals -->
+    <ShipmentModal
+      v-if="showModal"
+      :isOpen="showModal"
+      :shipment="selectedShipment"
+      @close="closeModal"
+      @save="handleSave"
+    />
+
+    <ConfirmModal
+      v-if="showDeleteModal"
+      title="Delete Shipment"
+      :message="`Are you sure you want to delete shipment ${shipmentToDelete?.trackingId || 'unknown'}? This action cannot be undone.`"
+      @confirm="handleDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import TrackingRow from '@/components/modals/TrackingModal.vue'
-import ConfirmDeleteModal from '@/components/ui/ConfirmDeleteModal.vue'
+import ShipmentModal from '@/components/modals/ShipmentModal.vue'
+import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { useShipments } from '@/composables/useShipments'
 import type { IShipment } from '@/types'
 
-const { getAllShipment, deleteShipment } = useShipments()
+const { getAllShipment, updateShipment, deleteShipment } = useShipments()
 
 const shipments = ref<IShipment[]>([])
 const isLoading = ref(false)
 const isRefreshing = ref(false)
-const isDeleteModalOpen = ref(false)
-const selectedTrackingId = ref<string | undefined>(undefined)
+const showModal = ref(false)
+const showDeleteModal = ref(false)
+const selectedShipment = ref<IShipment | null>(null)
+const shipmentToDelete = ref<IShipment | null>(null)
 const searchQuery = ref('')
 
-// Filtered shipments based on search
 const filteredShipments = computed(() => {
   if (!searchQuery.value) return shipments.value
-  
   const query = searchQuery.value.toLowerCase()
-  return shipments.value.filter(shipment => 
+  return shipments.value.filter(shipment =>
     shipment.trackingId?.toLowerCase().includes(query) ||
     shipment.sender?.name?.toLowerCase().includes(query) ||
     shipment.receiver?.name?.toLowerCase().includes(query) ||
     shipment.sender?.city?.toLowerCase().includes(query) ||
     shipment.receiver?.city?.toLowerCase().includes(query)
   )
-})
-
-// Fetch shipments on mount
-onMounted(async () => {
-  await fetchShipments()
 })
 
 async function fetchShipments() {
@@ -169,30 +167,48 @@ async function refreshShipments() {
   }
 }
 
-function openDeleteModal(trackingId: string) {
-  selectedTrackingId.value = trackingId
-  isDeleteModalOpen.value = true
+function openUpdateModal(shipment: IShipment) {
+  selectedShipment.value = { ...shipment }
+  showModal.value = true
 }
 
-function closeDeleteModal() {
-  isDeleteModalOpen.value = false
-  selectedTrackingId.value = undefined
+function closeModal() {
+  showModal.value = false
+  selectedShipment.value = null
 }
 
-async function handleDeleteConfirm() {
-  if (!selectedTrackingId.value) return
-
+async function handleSave(payload: any) {
   try {
-    await deleteShipment(selectedTrackingId.value)
-    
-    // Remove from local list
-    shipments.value = shipments.value.filter(
-      s => s.trackingId !== selectedTrackingId.value
-    )
-    
-    closeDeleteModal()
-  } catch (error) {
-    console.error('Failed to delete shipment:', error)
+    if (selectedShipment.value?.trackingId) {
+      const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
+      if (error) throw new Error(error)
+    }
+    await fetchShipments()
+  } catch (err) {
+    console.error('Save failed:', err)
+  } finally {
+    closeModal()
   }
 }
+
+function confirmDelete(shipment: IShipment) {
+  shipmentToDelete.value = shipment
+  showDeleteModal.value = true
+}
+
+async function handleDelete() {
+  if (!shipmentToDelete.value?.trackingId) return
+  try {
+    const { error } = await deleteShipment(shipmentToDelete.value.trackingId)
+    if (error) throw new Error(error)
+    await fetchShipments()
+  } catch (err) {
+    console.error('Delete failed:', err)
+  } finally {
+    showDeleteModal.value = false
+    shipmentToDelete.value = null
+  }
+}
+
+onMounted(fetchShipments)
 </script>

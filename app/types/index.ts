@@ -1,8 +1,5 @@
-// import Country  from "../utils/countries";
 import type { Country } from '@/utils/countries'
 
-
-// Enums for better type safety
 export enum ShipmentStatus {
   Registered = "Registered",
   PickedUp = "PickedUp",
@@ -29,21 +26,20 @@ export enum NotificationStatus {
 }
 
 export interface IUser {
-  _id: string ;
+  _id: string;
   username: string;
   email: string;
   password: string;
 }
 
-export interface IPerson extends IAddress{
+export interface IPerson extends IAddress {
   name: string;
   email: string;
   phoneNumber: string;
-  companyName?: string;          
+  companyName?: string;
   alternatePhone?: string;
 }
 
-// Address for person (origin/destination)
 export interface IAddress {
   address: string;
   city: string;
@@ -51,67 +47,56 @@ export interface IAddress {
   zipCode?: string;
 }
 
-// Package information
 export interface IPackage {
-  weightKg: number;          // in kg
-  dimensions: string;      // e.g., "30x20x15 cm"
+  weightKg: number;
+  dimensions: string;
   description: string;
-  declaredValue?: number;       // in sender's currency
-  quantity?: number;               // ← added: useful for multiple identical items
+  declaredValue?: number;
+  quantity?: number;
   isFragile?: boolean;
   requiresSignature?: boolean;
 }
 
-// Shipment interface
 export interface IShipment {
-  _id?: string ;
-  trackingId: string ;
-  
+  _id?: string;
+  trackingId: string;
   sender: IPerson;
   receiver: IPerson;
-
   package: IPackage;
-
-  origin: IAddress;         // pickup location
-  destination: IAddress;    // delivery location    
-
-  status: ShipmentStatus;      
-
-  registeredAt: Date; 
+  origin: IAddress;
+  destination: IAddress;
+  status: ShipmentStatus;
+  registeredAt: Date;
   estimatedDelivery: Date;
-
+  createdAt?: string;       // ← added for dashboard table
   currentLocation?: ITrackingLocation;
 }
 
-// Tracking shipment interface
 export interface ITrackingShipment {
-  trackingId: string;             
-  sender: Pick<IPerson, "name" | "city" | "address" | "country">; 
+  trackingId: string;
+  sender: Pick<IPerson, "name" | "city" | "address" | "country">;
   receiver: Pick<IPerson, "name" | "city" | "phoneNumber" | "country">;
-
-  status: ShipmentStatus;      
+  status: ShipmentStatus;
   destination: IAddress;
   country: Country;
   currentLocation?: ITrackingLocation;
   note?: string;
-
   registeredAt: Date;
-  estimatedDelivery: Date; 
+  estimatedDelivery: Date;
 }
 
-
 export interface INotification {
-  _id?: string ;
+  _id?: string;
   trackingId: string;
   type: NotificationType;
-  recipient: string;       // email or phone
+  recipient: string;
   message: string;
   sentAt: Date;
   status: NotificationStatus;
 }
 
 export interface ITrackingLocation {
-  name?: string;                  
+  name?: string;
   address?: string;
   city: string;
   country: Country;
@@ -123,68 +108,62 @@ export interface ITrackingLocation {
 }
 
 export interface AuthResponse {
-    data: {
-        token: string
-        refreshToken: string
-        user: {
-            email: string
-            username?: string
-        }
-    }
-    message: string
-    status: boolean
+  data: {
+    token: string;
+    refreshToken: string;
+    user: {
+      email: string;
+      username?: string;
+    };
+  };
+  message: string;
+  status: boolean;
 }
+
 export interface IShipmentResponse {
-    message: string
-    shipment : IShipment
-    receiptPdf?: string;
+  message: string;
+  shipment: IShipment;
+  receiptPdf?: string;
 }
 
 // Dashboard Types
 export interface StatusCount {
-    _id: string
-    count: number
+  status: string;   // ← was _id, matches backend { status, count }
+  count: number;
 }
 
 export interface CountryCount {
-    _id: string
-    count: number
+  country: string;  // ← was _id, matches backend { country, count }
+  count: number;
 }
 
-export interface TimePeriodCount {
-    _id: string
-    count: number
+export interface TimePeriod {
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
+  last30Days: number;
 }
 
 export interface Route {
-    route: string
-    count: number
+  route: string;
+  origin: string;
+  destination: string;
+  count: number;
 }
 
+// Single DashboardOverview matching backend response exactly
 export interface DashboardOverview {
-    totalShipments: number
-    statusBreakdown: StatusCount[]
-    recentShipments: IShipment[]
-    shipmentsByCountry: CountryCount[]
-    shipmentsByTimePeriod: TimePeriodCount[]
-    popularRoutes: Route[]
+  totalShipments: number;
+  shipmentsByStatus: StatusCount[];
+  recentShipments: IShipment[];
+  topOrigins: CountryCount[];
+  topDestinations: CountryCount[];
+  timePeriod: TimePeriod;
+  popularRoutes: Route[];
 }
-
-// export interface DashboardOverview {
-//   totalShipments: number
-//   shipmentsByStatus: StatusCount[]
-//   recentShipments: IShipment[]
-//   topOrigins: CountryCount[]
-//   topDestinations: CountryCount[]
-//   timePeriod: TimePeriodCount
-//   popularRoutes: Route[]
-// }
-
-
-//toast notifications
 
 export interface Toast {
-    id: number
-    message: string
-    type: 'success' | 'error' | 'info' | 'warning'
+  id: number;
+  message: string;
+  type: 'success' | 'error' | 'info' | 'warning';
 }

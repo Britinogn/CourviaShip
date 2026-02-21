@@ -1,6 +1,6 @@
 // composables/useDashboard.ts
 
-import type { IShipment, StatusCount, CountryCount, TimePeriodCount, Route, DashboardOverview } from '@/types';
+import type { IShipment, StatusCount, CountryCount, TimePeriod, Route, DashboardOverview } from '@/types';
 import { apiClient } from '~/utils/api';
 import { useDashboardStore } from '~/stores/dashboardStore';
 
@@ -13,19 +13,18 @@ export function useDashboard() {
       dashboardStore.setPending(true);
       dashboardStore.setError(null);
 
-      const data = await $fetch<any>('/dashboard', {
+      const response = await $fetch<any>('/dashboard', {
         ...apiClient(),
         method: 'GET',
       });
 
-      dashboardStore.setOverview(data);
+      if (response.success && response.data) {
+        dashboardStore.setOverview(response.data);  // ← extract response.data
+      }
 
-      return {
-        data,
-        error: null,
-      };
+      return { data: response.data, error: null };
     } catch (error: any) {
-      const errorMessage = error.data?.message || error.message || 'Failed to fetch dashboard overview';
+      const errorMessage = error.data?.message || 'Failed to fetch dashboard overview';
       dashboardStore.setError(errorMessage);
 
       return {
@@ -163,7 +162,7 @@ export function useDashboard() {
       dashboardStore.setPending(true);
       dashboardStore.setError(null);
 
-      const data = await $fetch<TimePeriodCount[]>('/dashboard/time-period', {
+      const data = await $fetch<TimePeriod[]>('/dashboard/time-period', {
         ...apiClient(),
         method: 'GET',
       });

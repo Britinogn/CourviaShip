@@ -227,12 +227,14 @@ const deliveredCount = computed(() =>
 const IncustomCount = computed(() => 
   shipments.value.filter(s => s.status === 'InCustoms').length
 )
+
 // const pendingCount = computed(() => 
 //   shipments.value.filter(s => s.status === 'Pending').length
 // )
 
 async function fetchShipments() {
   isLoading.value = true
+  // console.log('loading:', isLoading.value) 
   try {
     const { data, error } = await getAllShipment()
     if (error) {

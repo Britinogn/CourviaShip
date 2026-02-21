@@ -33,7 +33,7 @@
                   v-model="trackingId"
                   type="text"
                   required
-                  placeholder="Enter tracking number (e.g., SHIP12345678)"
+                  placeholder="Enter tracking number (e.g., CRV-XXXXXX)"
                   class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition"
                 />
                 <p class="mt-3 text-sm text-gray-500 flex items-center gap-2">
@@ -184,21 +184,21 @@
           </div>
 
           <!-- Current Location Card -->
-          <div v-if="shipment.currentLocation" class="bg-green-600 text-white rounded-3xl p-8 shadow-2xl">
+          <div v-if="shipment.currentLocation" class="bg-green-50 border-2 border-green-600 text-gray-900 rounded-3xl p-8 shadow-2xl">            
             <div class="flex items-start gap-6">
-              <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-9 h-9 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <div class="flex-1">
-                <h3 class="text-2xl font-bold mb-4">Current Location</h3>
+                <h3 class="text-2xl font-bold mb-4 text-green-700">Current Location</h3>
                 <div class="space-y-3 text-lg">
-                  <p><span class="font-bold">City:</span> {{ shipment.currentLocation?.city || 'N/A' }}</p>
-                  <p><span class="font-bold">Country:</span> {{ shipment.currentLocation?.country || 'N/A' }}</p>
-                  <p v-if="shipment.currentLocation?.name"><span class="font-bold">Facility:</span> {{ shipment.currentLocation.name }}</p>
-                  <p v-if="shipment.currentLocation?.address"><span class="font-bold">Address:</span> {{ shipment.currentLocation.address }}</p>
+                  <p><span class="font-bold">City:</span> {{ shipment.currentLocation.city }}</p>
+                  <p><span class="font-bold">Country:</span> {{ shipment.currentLocation.country }}</p>
+                  <p v-if="shipment.currentLocation.name"><span class="font-bold">Facility:</span> {{ shipment.currentLocation.name }}</p>
+                  <p v-if="shipment.currentLocation.address"><span class="font-bold">Address:</span> {{ shipment.currentLocation.address }}</p>
                 </div>
               </div>
             </div>
@@ -378,15 +378,18 @@ const getStatusClass = (status: ShipmentStatus): string => {
 }
 
 // Auto-scroll to results when shipment is successfully loaded
-watch(shipment, (newShipment) => {
-  if (newShipment && resultsSection.value) {
-    // Small delay to let DOM update
-    setTimeout(() => {
-      resultsSection.value?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
+// Auto-scroll logic
+watch(shipment, async (newShipment) => {
+  if (newShipment) {
+    // Wait for Vue to finish updating the DOM (rendering the v-if="shipment" section)
+    await nextTick()
+    
+    if (resultsSection.value) {
+      resultsSection.value.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
       })
-    }, 300)
+    }
   }
 })
 

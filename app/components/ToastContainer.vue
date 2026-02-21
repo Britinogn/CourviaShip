@@ -21,11 +21,11 @@ const { toasts, remove } = useToast()
 <style scoped>
 .toast-container {
     position: fixed;
-    top: 20px;
+    bottom: 20px; /* <-- Changed from top to bottom */
     right: 20px;
     z-index: 9999;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* <-- Pushes older toasts up as new ones arrive */
     gap: 10px;
 }
 

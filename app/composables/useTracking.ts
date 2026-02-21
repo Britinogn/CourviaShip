@@ -31,7 +31,7 @@ export function useTracking() {
             }
 
         } catch (error: any) {
-            const errorMessage = error.data?.message || error.message || 'Failed to track shipment'
+            const errorMessage = error.data?.message || error.response?.statusText || 'Failed to fetch shipment'
             trackingStore.setError(errorMessage)
             
             return {
