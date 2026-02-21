@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     server: {
+      allowedHosts: ['destructive-strait.outray.app'],
       watch: {
         usePolling: true,
       },
