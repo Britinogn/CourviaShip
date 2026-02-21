@@ -33,6 +33,7 @@ const chartData = computed(() => {
                 timePeriod?.thisWeek ?? 0,
                 timePeriod?.thisMonth ?? 0,
                 timePeriod?.last30Days ?? 0,
+                // timePeriod?.last60Days ?? 0,
             ],
             borderColor: '#16a34a',
             backgroundColor: 'rgba(22, 163, 74, 0.1)',

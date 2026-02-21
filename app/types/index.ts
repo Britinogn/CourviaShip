@@ -142,6 +142,8 @@ export interface TimePeriod {
   thisWeek: number;
   thisMonth: number;
   last30Days: number;
+  last60Days: number;
+  last6Months: number;
 }
 
 export interface Route {
