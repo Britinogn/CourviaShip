@@ -1,34 +1,46 @@
-import type {Toast} from '~/types'
+import type { Ref } from 'vue'
+
+export interface Toast {
+  id: number
+  message: string
+  type: 'success' | 'error' | 'info' | 'warning'
+  duration?: number // optional auto-dismiss in ms
+}
 
 const toasts = ref<Toast[]>([])
 let toastId = 0
 
 export function useToast() {
-    const show = (message: string, type: Toast['type'] = 'info', duration = 3000) => {
-        const id = toastId++
-        toasts.value.push({ id, message, type })
+  const show = (message: string, type: Toast['type'] = 'info', duration = 4000) => {
+    const id = toastId++
+    toasts.value.push({ id, message, type, duration })
 
-        setTimeout(() => {
-            remove(id)
-        }, duration)
+    if (duration > 0) {
+      setTimeout(() => {
+        remove(id)
+      }, duration)
     }
 
-    const remove = (id: number) => {
-        toasts.value = toasts.value.filter(t => t.id !== id)
-    }
+    return id // return id if you ever need to remove it manually
+  }
 
-    const success = (message: string) => show(message, 'success')
-    const error = (message: string) => show(message, 'error')
-    const info = (message: string) => show(message, 'info')
-    const warning = (message: string) => show(message, 'warning')
+  const remove = (id: number) => {
+    toasts.value = toasts.value.filter(t => t.id !== id)
+  }
 
-    return {
-        toasts: readonly(toasts),
-        show,
-        remove,
-        success,
-        error,
-        info,
-        warning
-    }
+  // Convenience methods
+  const success = (message: string, duration = 4000) => show(message, 'success', duration)
+  const error   = (message: string, duration = 5000) => show(message, 'error', duration)
+  const info    = (message: string, duration = 4000) => show(message, 'info', duration)
+  const warning = (message: string, duration = 5000) => show(message, 'warning', duration)
+
+  return {
+    toasts: readonly(toasts) as Ref<readonly Toast[]>,
+    show,
+    remove,
+    success,
+    error,
+    info,
+    warning
+  }
 }
