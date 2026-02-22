@@ -187,6 +187,7 @@
       v-if="showModal"
       :isOpen="showModal"
       :shipment="selectedShipment"
+      :isSaving="isSaving"
       @close="closeModal"
       @save="handleSave"
     />
@@ -213,6 +214,7 @@ const { getAllShipment, createShipment, updateShipment, deleteShipment } = useSh
 const shipments = ref<IShipment[]>([])
 const isLoading = ref(false)
 const showModal = ref(false)
+const isSaving = ref(false)
 const showDeleteModal = ref(false)
 const selectedShipment = ref<IShipment | null>(null)
 const shipmentToDelete = ref<IShipment | null>(null)
@@ -264,21 +266,40 @@ function closeModal() {
   selectedShipment.value = null
 }
 
-async function handleSave(payload: any) { 
-    try {
-        if (selectedShipment.value?.trackingId) {
-            const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
-            if (error) throw new Error(error)
-        } else {
-            const { error } = await createShipment(payload)
-            if (error) throw new Error(error)
-        }
-        await fetchShipments()
-    } catch (err) {
-        console.error('Save failed:', err)
-    } finally {
-        closeModal()
+
+async function handleSave(payload: any) {
+  isSaving.value = true
+  try {
+    if (selectedShipment.value?.trackingId) {
+      const { error } = await updateShipment(selectedShipment.value.trackingId, payload)
+      if (error) throw new Error(error)
+    } else {
+      const { data, error } = await createShipment(payload)
+      if (error) throw new Error(error)
+
+      const pdfBuffer = data?.shipment?.receiptPdf || data?.receiptPdf
+      if (pdfBuffer?.data) {
+        downloadPdf(pdfBuffer.data, data?.shipment?.trackingId || 'receipt')
+      }
     }
+    await fetchShipments()
+    closeModal()  // ← only close AFTER everything is done
+  } catch (err) {
+    console.error('Save failed:', err)
+  } finally {
+    isSaving.value = false
+  }
+}
+
+function downloadPdf(bufferData: number[], trackingId: string) {
+  const uint8Array = new Uint8Array(bufferData)
+  const blob = new Blob([uint8Array], { type: 'application/pdf' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `receipt-${trackingId}.pdf`
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 function confirmDelete(shipment: IShipment) {

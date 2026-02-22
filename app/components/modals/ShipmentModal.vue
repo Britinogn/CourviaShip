@@ -1,7 +1,7 @@
 <template>
   <div 
     class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 overflow-y-auto backdrop-blur-md z-50"
-    @click.self="$emit('close')"
+    @click.self="!props.isSaving && $emit('close')"
   >
     <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border-2 border-gray-100 my-8 animate-fadeIn">
       <!-- Header -->
@@ -21,7 +21,8 @@
         </div>
         <button
           @click="$emit('close')"
-          class="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all text-white"
+          :disabled="props.isSaving"
+          class="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -45,83 +46,39 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Full Name <span class="text-red-600">*</span></label>
-                <input 
-                  v-model="formData.sender.name" 
-                  type="text" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="John Doe"
-                />
+                <input v-model="formData.sender.name" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="John Doe" />
                 <p v-if="errors.senderName" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderName }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Email <span class="text-red-600">*</span></label>
-                <input 
-                  v-model="formData.sender.email" 
-                  type="email" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="john@example.com"
-                />
+                <input v-model="formData.sender.email" type="email" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="john@example.com" />
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Phone Number <span class="text-red-600">*</span></label>
-                <input 
-                  v-model="formData.sender.phoneNumber" 
-                  type="tel" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="+1 234 567 8900"
-                />
+                <input v-model="formData.sender.phoneNumber" type="tel" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="+1 234 567 8900" />
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Company Name</label>
-                <input 
-                  v-model="formData.sender.companyName" 
-                  type="text" 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="Optional"
-                />
+                <input v-model="formData.sender.companyName" type="text" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="Optional" />
               </div>
               <div class="md:col-span-2">
                 <label class="block text-sm font-bold mb-2 text-black">Address <span class="text-red-600">*</span></label>
-                <input 
-                  v-model="formData.sender.address" 
-                  type="text" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="123 Main Street"
-                />
+                <input v-model="formData.sender.address" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="123 Main Street" />
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">City <span class="text-red-600">*</span></label>
-                <input 
-                  v-model="formData.sender.city" 
-                  type="text" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="New York"
-                />
+                <input v-model="formData.sender.city" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="New York" />
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Country <span class="text-red-600">*</span></label>
-                <select 
-                  v-model="formData.sender.country" 
-                  required 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition"
-                >
+                <select v-model="formData.sender.country" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition">
                   <option value="">Select Country</option>
                   <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
                 </select>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Zip Code</label>
-                <input 
-                  v-model="formData.sender.zipCode" 
-                  type="text" 
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" 
-                  placeholder="10001"
-                />
+                <input v-model="formData.sender.zipCode" type="text" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="10001" />
               </div>
             </div>
           </div>
@@ -233,25 +190,8 @@
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Status <span class="text-red-600">*</span></label>
                 <select v-model="formData.status" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition">
-                  <option v-for="status in Object.values(ShipmentStatus)" :key="status" :value="status">
-                    {{ status }}
-                  </option>
+                  <option v-for="status in Object.values(ShipmentStatus)" :key="status" :value="status">{{ status }}</option>
                 </select>
-
-                <!-- <select
-                  v-model="formData.status"
-                  required
-                  class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition"
-                >
-                  <option
-                    v-for="status in Object.values(ShipmentStatus)"
-                    :key="status"
-                    :value="status as ShipmentStatus"
-                  >
-                    {{ status }}
-                  </option>
-                </select> -->
-
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Estimated Delivery <span class="text-red-600">*</span></label>
@@ -266,17 +206,22 @@
       <div class="flex gap-4 p-8 bg-white border-t-2 border-gray-100">
         <button 
           type="button" 
-          @click="$emit('close')" 
-          class="flex-1 py-4 px-6 bg-gray-100 text-black font-bold rounded-xl hover:bg-gray-200 transition-all text-lg"
+          @click="$emit('close')"
+          :disabled="props.isSaving"
+          class="flex-1 py-4 px-6 bg-gray-100 text-black font-bold rounded-xl hover:bg-gray-200 transition-all text-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Cancel
         </button>
         <button 
           @click="handleSubmit"
-          :disabled="isLoading" 
-          class="flex-1 py-4 px-6 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg"
+          :disabled="props.isSaving" 
+          class="flex-1 py-4 px-6 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg flex items-center justify-center gap-2"
         >
-          {{ isLoading ? 'Saving...' : isEdit ? 'Update Shipment' : 'Create Shipment' }}
+          <svg v-if="props.isSaving" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          <span>{{ props.isSaving ? (isEdit ? 'Updating...' : 'Creating...') : (isEdit ? 'Update Shipment' : 'Create Shipment') }}</span>
         </button>
       </div>
     </div>
@@ -288,10 +233,12 @@ import { ref, computed, onMounted, watch } from 'vue'
 import type { IShipment } from '@/types'
 import { ShipmentStatus } from '@/types'
 import { countries } from '@/utils/countries'
+import type { Country } from '@/utils/countries'
 
 const props = defineProps<{
   isOpen: boolean
   shipment?: IShipment | null
+  isSaving?: boolean  // ← added
 }>()
 
 const emit = defineEmits<{
@@ -300,55 +247,27 @@ const emit = defineEmits<{
 }>()
 
 const isEdit = computed(() => !!props.shipment)
-const isLoading = ref(false)
 const errors = ref<Record<string, string>>({})
 const estimatedDeliveryString = ref('')
 
 const formData = ref<IShipment>({
   trackingId: '',
   sender: {
-    name: '',
-    email: '',
-    phoneNumber: '',
-    companyName: undefined,
-    alternatePhone: undefined,
-    address: '',
-    city: '',
-    country: countries[0] || 'United States' as Country,
-    zipCode: undefined
+    name: '', email: '', phoneNumber: '', companyName: undefined,
+    alternatePhone: undefined, address: '', city: '',
+    country: countries[0] || 'United States' as Country, zipCode: undefined
   },
   receiver: {
-    name: '',
-    email: '',
-    phoneNumber: '',
-    companyName: undefined,
-    alternatePhone: undefined,
-    address: '',
-    city: '',
-    country: countries[0] || 'United States' as Country,
-    zipCode: undefined
+    name: '', email: '', phoneNumber: '', companyName: undefined,
+    alternatePhone: undefined, address: '', city: '',
+    country: countries[0] || 'United States' as Country, zipCode: undefined
   },
   package: {
-    weightKg: 0,
-    dimensions: '',
-    description: '',
-    declaredValue: undefined,
-    quantity: 1,
-    isFragile: false,
-    requiresSignature: false
+    weightKg: 0, dimensions: '', description: '',
+    declaredValue: undefined, quantity: 1, isFragile: false, requiresSignature: false
   },
-  origin: {
-    address: '',
-    city: '',
-    country: countries[0] || 'United States' as Country,
-    zipCode: undefined
-  },
-  destination: {
-    address: '',
-    city: '',
-    country: countries[0] || 'United States' as Country,
-    zipCode: undefined
-  },
+  origin: { address: '', city: '', country: countries[0] || 'United States' as Country, zipCode: undefined },
+  destination: { address: '', city: '', country: countries[0] || 'United States' as Country, zipCode: undefined },
   status: ShipmentStatus.InTransit,
   registeredAt: new Date(),
   estimatedDelivery: new Date(),
@@ -389,29 +308,16 @@ watch(() => formData.value.receiver, (receiver) => {
 const validateForm = () => {
   errors.value = {}
   let valid = true
-
   if (!formData.value.sender.name.trim()) { errors.value.senderName = 'Required'; valid = false }
   if (!formData.value.receiver.name.trim()) { errors.value.receiverName = 'Required'; valid = false }
   if (formData.value.package.weightKg <= 0) { errors.value.weight = 'Must be > 0'; valid = false }
-
   return valid
 }
 
-const handleSubmit = async () => {
+const handleSubmit = () => {
   if (!validateForm()) return
 
-  isLoading.value = true
-
-  // Create flat structure payload matching backend format
   const payload = {
-
-    // trackingId: isEdit.value
-    // ? formData.value.trackingId   // KEEP EXISTING
-    // : `SHIP-${Date.now().toString().slice(-8)}`, // CREATE ONLY
-
-
-
-    // Sender fields
     senderName: formData.value.sender.name,
     senderEmail: formData.value.sender.email,
     senderPhone: formData.value.sender.phoneNumber,
@@ -422,7 +328,6 @@ const handleSubmit = async () => {
     senderCompanyName: formData.value.sender.companyName,
     senderAlternatePhone: formData.value.sender.alternatePhone,
 
-    // Receiver fields
     receiverName: formData.value.receiver.name,
     receiverEmail: formData.value.receiver.email,
     receiverPhone: formData.value.receiver.phoneNumber,
@@ -433,7 +338,6 @@ const handleSubmit = async () => {
     receiverCompanyName: formData.value.receiver.companyName,
     receiverAlternatePhone: formData.value.receiver.alternatePhone,
 
-    // Package fields
     packageWeightKg: formData.value.package.weightKg,
     packageDimensions: formData.value.package.dimensions,
     packageDescription: formData.value.package.description,
@@ -442,42 +346,30 @@ const handleSubmit = async () => {
     packageIsFragile: formData.value.package.isFragile,
     packageRequiresSignature: formData.value.package.requiresSignature,
 
-    // Origin fields
     originAddress: formData.value.origin.address,
     originCity: formData.value.origin.city,
     originCountry: formData.value.origin.country,
     originZipCode: formData.value.origin.zipCode,
 
-    // Destination fields
     destinationAddress: formData.value.destination.address,
     destinationCity: formData.value.destination.city,
     destinationCountry: formData.value.destination.country,
     destinationZipCode: formData.value.destination.zipCode,
 
     status: formData.value.status as ShipmentStatus,
-
-    // Shipment details
     estimatedDelivery: new Date(estimatedDeliveryString.value).toISOString()
   }
 
   emit('save', payload)
-  emit('close')
-  isLoading.value = false
+  // ← no emit('close') here — parent controls closing
 }
 </script>
 
 <style scoped>
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
-
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
