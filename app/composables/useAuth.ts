@@ -1,11 +1,14 @@
 import type { AuthResponse } from "~/types";
 import { useAuthStore } from "~/stores/auth";
 import { apiClient } from "~/utils/api";
+// import  IUser  from "~/types";
 
 export function useAuth() {
     const authStore = useAuthStore()
     const router = useRouter()
     const toast = useToast() 
+    // type AuthUser = Omit<IUser, 'password'> & { _id?: string }
+
 
     // --- Signup ---
     async function signup(username: string, email: string, password: string) {
@@ -24,7 +27,7 @@ export function useAuth() {
             // Auto-login after signup
             if (data?.token) {
                 authStore.setToken(data.token)
-                //authStore.setUser(data.user)  
+                authStore.setUser(data.user)  
                 toast.success('SignUp successful!') 
                 router.push('/')
             }
@@ -57,7 +60,7 @@ export function useAuth() {
 
             if (data?.token) {
                 authStore.setToken(data.token)
-                //authStore.setUser(data.user)
+                authStore.setUser(data.user)
                 toast.success('Login successful!')
                 router.push('/dashboard')
             }

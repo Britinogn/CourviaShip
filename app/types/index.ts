@@ -26,7 +26,7 @@ export enum NotificationStatus {
 }
 
 export interface IUser {
-  _id: string;
+  _id?: string;
   username: string;
   email: string;
   password: string;
@@ -113,7 +113,7 @@ export interface AuthResponse {
     refreshToken: string;
     user: {
       email: string;
-      username?: string;
+      username: string;
     };
   };
   message: string;

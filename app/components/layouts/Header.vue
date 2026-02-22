@@ -22,7 +22,7 @@
             </div>
 
             <!-- Center: Search Bar (Desktop) -->
-            <div class="md:block flex-1 max-w-xl mx-8">
+            <!-- <div class="md:block flex-1 max-w-xl mx-8">
                 <div class="relative">
                     <input
                         type="text"
@@ -35,7 +35,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Right Side Actions -->
             <div class="flex items-center gap-2">

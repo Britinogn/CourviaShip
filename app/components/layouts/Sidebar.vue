@@ -106,15 +106,15 @@
 
                 <!-- Quick Actions Section -->
                 <div class="mt-8 pt-6 border-t border-green-500/30">
-                <p class="px-4 text-xs font-semibold text-green-200 uppercase tracking-wider mb-3">Quick Actions</p>
-                <button class="w-full flex items-center gap-3 px-4 py-3 text-green-50 hover:bg-white/10 rounded-xl transition-all group">
-                    <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-white/10">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    </div>
-                    <span class="text-sm font-medium">New Shipment</span>
-                </button>
+                    <p class="px-4 text-xs font-semibold text-green-200 uppercase tracking-wider mb-3">Quick Actions</p>
+                    <button class="w-full flex items-center gap-3 px-4 py-3 text-green-50 hover:bg-white/10 rounded-xl transition-all group">
+                        <div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-white/10">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        </div>
+                        <span class="text-sm font-medium">New Shipment</span>
+                    </button>
                 </div>
             </nav>
 
@@ -161,10 +161,10 @@ const navItems: NavItem[] = [
     { name: 'Dashboard', path: '/dashboard', icon: HomeIcon },
     { name: 'Shipments', path: '/dashboard/shipments', icon: ShipIcon },
     { name: 'Tracking', path: '/dashboard/tracking', icon: LocateIcon },
-    { name: 'Shipment Details', path: '/dashboard/shipments-details', icon: ShipIcon }, 
+    //{ name: 'Shipment Details', path: '/dashboard/shipments-details', icon: ShipIcon }, 
 
     // { name: 'Analytics', path: '/dashboard/analytics', icon: ChartArea },
-    // { name: 'Settings', path: '/dashboard/settings', icon: Settings },
+    //{ name: 'Settings', path: '/dashboard/settings', icon: Settings },
 ]
 
 const isActive = (path: string) => {
