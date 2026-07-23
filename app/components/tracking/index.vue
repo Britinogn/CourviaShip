@@ -192,7 +192,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <div class="flex-1">
+              <!-- <div class="flex-1">
                 <h3 class="text-2xl font-bold mb-4 text-green-700">Current Location</h3>
                 <div class="space-y-3 text-lg">
                   <p><span class="font-bold">City:</span> {{ shipment.currentLocation.city }}</p>
@@ -200,7 +200,7 @@
                   <p v-if="shipment.currentLocation.name"><span class="font-bold">Facility:</span> {{ shipment.currentLocation.name }}</p>
                   <p v-if="shipment.currentLocation.address"><span class="font-bold">Address:</span> {{ shipment.currentLocation.address }}</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
