@@ -27,8 +27,8 @@
                 <h4 class="text-white text-lg font-semibold mb-6">Contact</h4>
                 <ul class="space-y-3 text-sm">
                     <li>Email: support@{{ appNameShort}}.com</li>
-                    <li>Phone: +234 000 000 0000</li>
-                    <li>Lagos, Nigeria</li>
+                    <li>Phone: +1 (272) 900-1432</li>
+                    <li>Washington, D.C., USA</li>
                 </ul>
                 </div>
 
