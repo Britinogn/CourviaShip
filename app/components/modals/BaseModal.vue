@@ -80,7 +80,7 @@ const handleClose = () => {
 }
 
 // Prevent body scroll when modal is open
-watch(() => props.isOpen, (isOpen) => {
+watch(() => props.isOpen, (isOpen: boolean) => {
   if (isOpen) {
     document.body.style.overflow = 'hidden'
   } else {

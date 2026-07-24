@@ -609,7 +609,7 @@
 <script setup lang="ts">
 import type { ITrackingShipment } from '~/types'
 import { ShipmentStatus } from '~/types'
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useTracking } from '@/composables/useTracking'
 
 const { trackShipment } = useTracking()
