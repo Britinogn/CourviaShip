@@ -33,6 +33,21 @@
       <!-- Form -->
       <div class="overflow-y-auto max-h-[calc(90vh-180px)] bg-gray-50">
         <form @submit.prevent="handleSubmit" class="p-8 space-y-8">
+
+          <!-- Validation summary banner -->
+          <div
+            v-if="submitAttempted && hasErrors"
+            class="flex items-start gap-3 bg-red-50 border-2 border-red-200 rounded-2xl p-4"
+          >
+            <svg class="w-6 h-6 text-red-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            <div>
+              <p class="font-bold text-red-700">Some required fields are missing</p>
+              <p class="text-sm text-red-600 mt-0.5">Check the fields highlighted in red below and try again.</p>
+            </div>
+          </div>
+
           <!-- Sender Information -->
           <div class="bg-white p-8 rounded-2xl shadow-sm border-2 border-gray-100">
             <div class="flex items-center gap-3 mb-6">
@@ -46,16 +61,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Full Name <span class="text-red-600">*</span></label>
-                <input v-model="formData.sender.name" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="John Doe" />
+                <input v-model="formData.sender.name" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.senderName ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="John Doe" />
                 <p v-if="errors.senderName" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderName }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Email <span class="text-red-600">*</span></label>
-                <input v-model="formData.sender.email" type="email" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="john@example.com" />
+                <input v-model="formData.sender.email" type="email" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.senderEmail ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="john@example.com" />
+                <p v-if="errors.senderEmail" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderEmail }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Phone Number <span class="text-red-600">*</span></label>
-                <input v-model="formData.sender.phoneNumber" type="tel" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="+1 234 567 8900" />
+                <input v-model="formData.sender.phoneNumber" type="tel" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.senderPhone ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="+1 234 567 8900" />
+                <p v-if="errors.senderPhone" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderPhone }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Company Name</label>
@@ -63,18 +80,21 @@
               </div>
               <div class="md:col-span-2">
                 <label class="block text-sm font-bold mb-2 text-black">Address <span class="text-red-600">*</span></label>
-                <input v-model="formData.sender.address" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="123 Main Street" />
+                <input v-model="formData.sender.address" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.senderAddress ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="123 Main Street" />
+                <p v-if="errors.senderAddress" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderAddress }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">City <span class="text-red-600">*</span></label>
-                <input v-model="formData.sender.city" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="New York" />
+                <input v-model="formData.sender.city" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.senderCity ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="New York" />
+                <p v-if="errors.senderCity" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderCity }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Country <span class="text-red-600">*</span></label>
-                <select v-model="formData.sender.country" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition">
+                <select v-model="formData.sender.country" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition', errors.senderCountry ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']">
                   <option value="">Select Country</option>
                   <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
                 </select>
+                <p v-if="errors.senderCountry" class="text-red-600 text-xs mt-1 font-medium">{{ errors.senderCountry }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Zip Code</label>
@@ -96,15 +116,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Full Name <span class="text-red-600">*</span></label>
-                <input v-model="formData.receiver.name" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="Jane Smith" />
+                <input v-model="formData.receiver.name" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.receiverName ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="Jane Smith" />
+                <p v-if="errors.receiverName" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverName }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Email <span class="text-red-600">*</span></label>
-                <input v-model="formData.receiver.email" type="email" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="jane@example.com" />
+                <input v-model="formData.receiver.email" type="email" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.receiverEmail ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="jane@example.com" />
+                <p v-if="errors.receiverEmail" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverEmail }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Phone Number <span class="text-red-600">*</span></label>
-                <input v-model="formData.receiver.phoneNumber" type="tel" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="+1 234 567 8900" />
+                <input v-model="formData.receiver.phoneNumber" type="tel" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.receiverPhone ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="+1 234 567 8900" />
+                <p v-if="errors.receiverPhone" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverPhone }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Company Name</label>
@@ -112,18 +135,21 @@
               </div>
               <div class="md:col-span-2">
                 <label class="block text-sm font-bold mb-2 text-black">Address <span class="text-red-600">*</span></label>
-                <input v-model="formData.receiver.address" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="456 Oak Avenue" />
+                <input v-model="formData.receiver.address" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.receiverAddress ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="456 Oak Avenue" />
+                <p v-if="errors.receiverAddress" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverAddress }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">City <span class="text-red-600">*</span></label>
-                <input v-model="formData.receiver.city" type="text" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="Los Angeles" />
+                <input v-model="formData.receiver.city" type="text" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.receiverCity ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="Los Angeles" />
+                <p v-if="errors.receiverCity" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverCity }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Country <span class="text-red-600">*</span></label>
-                <select v-model="formData.receiver.country" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition">
+                <select v-model="formData.receiver.country" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition', errors.receiverCountry ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']">
                   <option value="">Select Country</option>
                   <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
                 </select>
+                <p v-if="errors.receiverCountry" class="text-red-600 text-xs mt-1 font-medium">{{ errors.receiverCountry }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Zip Code</label>
@@ -145,15 +171,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Weight (kg) <span class="text-red-600">*</span></label>
-                <input v-model.number="formData.package.weightKg" type="number" step="0.01" min="0.01" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="5.5" />
+                <input v-model.number="formData.package.weightKg" type="number" step="0.01" min="0.01" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.weight ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="5.5" />
+                <p v-if="errors.weight" class="text-red-600 text-xs mt-1 font-medium">{{ errors.weight }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Dimensions <span class="text-red-600">*</span></label>
-                <input v-model="formData.package.dimensions" type="text" required placeholder="50x40x30 cm" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" />
+                <input v-model="formData.package.dimensions" type="text" required placeholder="50x40x30 cm" :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.dimensions ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" />
+                <p v-if="errors.dimensions" class="text-red-600 text-xs mt-1 font-medium">{{ errors.dimensions }}</p>
               </div>
               <div class="md:col-span-2">
                 <label class="block text-sm font-bold mb-2 text-black">Description <span class="text-red-600">*</span></label>
-                <textarea v-model="formData.package.description" required rows="3" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition placeholder-gray-400" placeholder="Electronics, Books, etc."></textarea>
+                <textarea v-model="formData.package.description" required rows="3" :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition placeholder-gray-400', errors.description ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" placeholder="Electronics, Books, etc."></textarea>
+                <p v-if="errors.description" class="text-red-600 text-xs mt-1 font-medium">{{ errors.description }}</p>
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Declared Value ($)</label>
@@ -195,7 +224,13 @@
               </div>
               <div>
                 <label class="block text-sm font-bold mb-2 text-black">Estimated Delivery <span class="text-red-600">*</span></label>
-                <input v-model="estimatedDeliveryString" type="datetime-local" required class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition" />
+                <input v-model="estimatedDeliveryString" type="datetime-local" required :class="['w-full px-4 py-3 bg-white border-2 rounded-xl text-black focus:ring-0 transition', errors.estimatedDelivery ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-green-600']" />
+                <p v-if="errors.estimatedDelivery" class="text-red-600 text-xs mt-1 font-medium">{{ errors.estimatedDelivery }}</p>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-bold mb-2 text-black">Date Sent</label>
+                <input v-model="registeredAtString" type="datetime-local" class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-black focus:border-green-600 focus:ring-0 transition" />
+                <p class="text-gray-500 text-xs mt-1">Set this to a past date to back-date the shipment.</p>
               </div>
             </div>
           </div>
@@ -238,7 +273,7 @@ import type { Country } from '@/utils/countries'
 const props = defineProps<{
   isOpen: boolean
   shipment?: IShipment | null
-  isSaving?: boolean  // ← added
+  isSaving?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -248,7 +283,11 @@ const emit = defineEmits<{
 
 const isEdit = computed(() => !!props.shipment)
 const errors = ref<Record<string, string>>({})
+const submitAttempted = ref(false)
+const hasErrors = computed(() => Object.keys(errors.value).length > 0)
+
 const estimatedDeliveryString = ref('')
+const registeredAtString = ref('')
 
 const formData = ref<IShipment>({
   trackingId: '',
@@ -278,8 +317,10 @@ onMounted(() => {
   if (props.shipment) {
     formData.value = { ...props.shipment }
     estimatedDeliveryString.value = new Date(props.shipment.estimatedDelivery).toISOString().slice(0, 16)
+    registeredAtString.value = new Date(props.shipment.registeredAt).toISOString().slice(0, 16)
   } else {
     estimatedDeliveryString.value = new Date().toISOString().slice(0, 16)
+    registeredAtString.value = new Date().toISOString().slice(0, 16)
   }
 })
 
@@ -308,13 +349,45 @@ watch(() => formData.value.receiver, (receiver) => {
 const validateForm = () => {
   errors.value = {}
   let valid = true
-  if (!formData.value.sender.name.trim()) { errors.value.senderName = 'Required'; valid = false }
-  if (!formData.value.receiver.name.trim()) { errors.value.receiverName = 'Required'; valid = false }
-  if (formData.value.package.weightKg <= 0) { errors.value.weight = 'Must be > 0'; valid = false }
+
+  const require = (val: unknown, key: string, msg = 'This field is required') => {
+    if (val === null || val === undefined || (typeof val === 'string' && !val.trim())) {
+      errors.value[key] = msg
+      valid = false
+    }
+  }
+
+  require(formData.value.sender.name, 'senderName')
+  require(formData.value.sender.email, 'senderEmail')
+  require(formData.value.sender.phoneNumber, 'senderPhone')
+  require(formData.value.sender.address, 'senderAddress')
+  require(formData.value.sender.city, 'senderCity')
+  require(formData.value.sender.country, 'senderCountry')
+
+  require(formData.value.receiver.name, 'receiverName')
+  require(formData.value.receiver.email, 'receiverEmail')
+  require(formData.value.receiver.phoneNumber, 'receiverPhone')
+  require(formData.value.receiver.address, 'receiverAddress')
+  require(formData.value.receiver.city, 'receiverCity')
+  require(formData.value.receiver.country, 'receiverCountry')
+
+  if (!formData.value.package.weightKg || formData.value.package.weightKg <= 0) {
+    errors.value.weight = 'Must be greater than 0'
+    valid = false
+  }
+  require(formData.value.package.dimensions, 'dimensions')
+  require(formData.value.package.description, 'description')
+
+  if (!estimatedDeliveryString.value) {
+    errors.value.estimatedDelivery = 'Required'
+    valid = false
+  }
+
   return valid
 }
 
 const handleSubmit = () => {
+  submitAttempted.value = true
   if (!validateForm()) return
 
   const payload = {
@@ -357,7 +430,8 @@ const handleSubmit = () => {
     destinationZipCode: formData.value.destination.zipCode,
 
     status: formData.value.status as ShipmentStatus,
-    estimatedDelivery: new Date(estimatedDeliveryString.value).toISOString()
+    estimatedDelivery: new Date(estimatedDeliveryString.value).toISOString(),
+    registeredAt: new Date(registeredAtString.value).toISOString()
   }
 
   emit('save', payload)

@@ -1,18 +1,31 @@
 <template>
-  <div class="h-full flex flex-col justify-center gap-3 py-2">
-    <div v-for="item in props.data" :key="item.status" class="flex items-center gap-3">
-      <span class="text-xs text-gray-600 w-28 shrink-0">{{ item.status }}</span>
-      <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+  <div class="h-full flex flex-col justify-center gap-2.5 sm:gap-3 py-2">
+    <div
+      v-for="item in props.data"
+      :key="item.status"
+      class="flex items-center gap-2 sm:gap-3"
+    >
+      <span class="text-xs text-gray-600 w-20 sm:w-28 shrink-0 truncate">
+        {{ item.status }}
+      </span>
+
+      <div class="flex-1 bg-gray-100 rounded-full h-3.5 sm:h-4 overflow-hidden">
         <div
           class="h-full rounded-full transition-all duration-500"
           :class="getBarColor(item.status)"
           :style="{ width: getBarWidth(item.count) }"
         ></div>
       </div>
-      <span class="text-xs font-bold text-gray-700 w-6 text-right">{{ item.count }}</span>
+
+      <span class="text-xs font-bold text-gray-700 w-5 sm:w-6 text-right shrink-0">
+        {{ item.count }}
+      </span>
     </div>
 
-    <div v-if="!props.data || props.data.length === 0" class="text-center text-gray-400 text-sm">
+    <div
+      v-if="!props.data || props.data.length === 0"
+      class="text-center text-gray-400 text-sm py-4"
+    >
       No data available
     </div>
   </div>

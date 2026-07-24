@@ -1,244 +1,130 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Hero Section -->
-    <section class="bg-green-700 text-white py-24 relative overflow-hidden">
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute -top-20 -right-20 w-72 h-72 bg-white rounded-full"></div>
-        <div class="absolute -bottom-24 -left-20 w-80 h-80 bg-white rounded-full"></div>
+    <section class="bg-green-700 text-white py-14 sm:py-16 lg:py-20 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 top-1">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-white rounded-full"></div>
+        <div class="absolute -bottom-20 -left-16 w-72 h-72 bg-white rounded-full"></div>
       </div>
 
       <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-4xl mx-auto text-center">
-
-          <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-2xl mb-8">
-            <svg 
-              class="w-12 h-12 text-green-700" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                stroke-linecap="round" 
-                stroke-linejoin="round" 
-                stroke-width="2" 
-                d="M9 20l-5.447-2.724A2 2 0 012.5 15.487V8.513a2 2 0 011.053-1.789L9 4m0 16l6-3m-6 3V4m6 13l5.447-2.724A2 2 0 0021.5 12.487V5.513a2 2 0 00-1.053-1.789L15 1m0 16V1m0 0L9 4"
-              />
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl shadow-xl mb-5 sm:mb-6">
+            <svg class="w-8 h-8 sm:w-10 sm:h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 20l-5.447-2.724A2 2 0 012.5 15.487V8.513a2 2 0 011.053-1.789L9 4m0 16l6-3m-6 3V4m6 13l5.447-2.724A2 2 0 0021.5 12.487V5.513a2 2 0 00-1.053-1.789L15 1m0 16V1m0 0L9 4" />
             </svg>
           </div>
 
-          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3 sm:mb-4">
             Track Your Shipment
           </h1>
 
-          <p class="max-w-2xl mx-auto text-lg md:text-xl text-green-100 leading-relaxed">
+          <p class="max-w-xl mx-auto text-sm sm:text-base text-green-100 leading-relaxed">
             Stay updated with your delivery journey. Enter your tracking number and
             monitor your package status in real time.
           </p>
 
-          <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm">
-            <div class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  d="M5 13l4 4L19 7"/>
+          <div class="mt-6 sm:mt-8 flex flex-wrap justify-center gap-2 sm:gap-3 text-xs sm:text-sm">
+            <div class="flex items-center gap-1.5 bg-white/10 px-3.5 py-2 rounded-full backdrop-blur-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
               </svg>
               Real-time Tracking
             </div>
-
-            <div class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 8v4l3 3"/>
+            <div class="flex items-center gap-1.5 bg-white/10 px-3.5 py-2 rounded-full backdrop-blur-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/>
               </svg>
               Delivery Updates
             </div>
-
-            <div class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 12h18M12 3v18"/>
+            <div class="flex items-center gap-1.5 bg-white/10 px-3.5 py-2 rounded-full backdrop-blur-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M12 3v18"/>
               </svg>
               Global Coverage
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Tracking Form -->
-    <section class="py-20 bg-gray-50">
+   <!-- Tracking Form -->
+   <section class="py-10 sm:py-14 lg:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto">
+        <div class="max-w-2xl mx-auto">
 
-          <!-- Tracking Card -->
-          <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10">
-
-            <div class="text-center mb-8">
-              <div class="w-14 h-14 mx-auto mb-4 bg-green-100 rounded-2xl flex items-center justify-center">
-                <svg 
-                  class="w-7 h-7 text-green-700" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2"
-                    d="M20 12H4m16 0l-4-4m4 4l-4 4"
-                  />
+          <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 sm:p-8">
+            <div class="text-center mb-6">
+              <div class="w-12 h-12 mx-auto mb-3 bg-green-100 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4m16 0l-4-4m4 4l-4 4"/>
                 </svg>
               </div>
-
-              <h2 class="text-2xl md:text-3xl font-bold text-gray-900">
-                Enter Tracking Number
-              </h2>
-
-              <p class="text-gray-500 mt-2">
-                Get the latest status of your shipment instantly
-              </p>
+              <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Enter Tracking Number</h2>
+              <p class="text-gray-500 mt-1 text-sm">Get the latest status of your shipment instantly</p>
             </div>
 
-
-            <form @submit.prevent="handleTrack" class="space-y-6">
-
+            <form @submit.prevent="handleTrack" class="space-y-5">
               <div>
-                <label 
-                  for="trackingId" 
-                  class="block text-sm font-semibold text-gray-800 mb-3"
-                >
+                <label for="trackingId" class="block text-sm font-semibold text-gray-800 mb-2">
                   Tracking Number
                 </label>
-
                 <div class="relative">
-
                   <input
                     id="trackingId"
                     v-model="trackingId"
                     type="text"
                     required
                     placeholder="CRV-XXXXXX"
-                    class="w-full px-5 py-4 pl-14 text-lg bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-green-100 focus:border-green-600 outline-none transition-all"
+                    class="w-full px-4 py-3.5 pl-12 text-sm sm:text-base bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-green-100 focus:border-green-600 outline-none transition-all"
                   />
-
-                  <svg 
-                    class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 20l-5.447-2.724A2 2 0 012.5 15.487V8.513a2 2 0 011.053-1.789L9 4m0 16l6-3m-6 3V4m6 13l5.447-2.724A2 2 0 0021.5 12.487V5.513a2 2 0 00-1.053-1.789L15 1m0 16V1"
-                    />
+                  <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 20l-5.447-2.724A2 2 0 012.5 15.487V8.513a2 2 0 011.053-1.789L9 4m0 16l6-3m-6 3V4m6 13l5.447-2.724A2 2 0 0021.5 12.487V5.513a2 2 0 00-1.053-1.789L15 1m0 16V1"/>
                   </svg>
-
                 </div>
-
-
-                <p class="mt-3 text-sm text-gray-500 flex items-center gap-2">
-                  <svg 
-                    class="w-4 h-4 text-green-600"
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path 
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                <p class="mt-2 text-xs text-gray-500 flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
-
                   Found in your shipment confirmation email
                 </p>
               </div>
 
-
               <button
                 type="submit"
                 :disabled="isTracking || !trackingId"
-                class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl font-bold text-lg transition-all shadow-lg shadow-green-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-semibold text-sm sm:text-base transition-all shadow-md shadow-green-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-
-                <svg 
-                  v-if="isTracking"
-                  class="animate-spin w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle 
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  />
-
-                  <path 
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
+                <svg v-if="isTracking" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                 </svg>
-
-                <span>
-                  {{ isTracking ? 'Tracking Shipment...' : 'Track Shipment' }}
-                </span>
-
+                <span>{{ isTracking ? 'Tracking Shipment...' : 'Track Shipment' }}</span>
               </button>
-
             </form>
-
           </div>
 
-
           <!-- Support Card -->
-          <div class="mt-8 bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-
-            <div class="flex gap-4">
-
-              <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <svg 
-                  class="w-6 h-6 text-green-700"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M18.364 5.636a9 9 0 010 12.728m0-12.728L5.636 18.364m12.728-12.728L18.364 18.364"
-                  />
+          <div class="mt-5 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0-12.728L5.636 18.364m12.728-12.728L18.364 18.364"/>
                 </svg>
               </div>
-
-
               <div>
-                <h3 class="font-bold text-gray-900 mb-1">
-                  Can't find your tracking number?
-                </h3>
-
-                <p class="text-sm text-gray-600 leading-relaxed">
+                <h3 class="font-semibold text-gray-900 text-sm mb-0.5">Can't find your tracking number?</h3>
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                   Check your confirmation email or reach our support team at
-                  <a 
-                    href="mailto:support@courviaship.com"
-                    class="text-green-700 font-semibold hover:underline"
-                  >
+                  <a href="mailto:support@courviaship.com" class="text-green-700 font-semibold hover:underline">
                     support@courviaship.com
                   </a>
                 </p>
               </div>
-
             </div>
-
           </div>
-
         </div>
       </div>
     </section>
@@ -557,47 +443,26 @@
     </section>
 
     <!-- How Tracking Works -->
-    <section class="py-20 bg-white">
+    <section class="py-12 sm:py-16 bg-white">
       <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-black mb-4">How {{ appName }} Tracking Works</h2>
-            <p class="text-xl text-gray-600">Stay informed every step of the way</p>
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-10 sm:mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-black mb-2">How {{ appName }} Tracking Works</h2>
+            <p class="text-sm sm:text-base text-gray-600">Stay informed every step of the way</p>
           </div>
 
-          <div class="relative grid md:grid-cols-4 gap-y-12 gap-x-8">
-            <div class="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] border-t-2 border-dashed border-gray-300"></div>
+          <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] border-t-2 border-dashed border-gray-300"></div>
 
-            <div class="relative text-center">
-              <div class="relative z-10 w-20 h-20 bg-white border-2 border-black text-black rounded-full flex items-center justify-center mx-auto mb-6">
-                <span class="text-2xl font-bold">1</span>
+            <div v-for="(step, i) in steps" :key="i" class="relative text-center">
+              <div
+                class="relative z-10 w-14 h-14 sm:w-16 sm:h-16 border-2 rounded-full flex items-center justify-center mx-auto mb-4"
+                :class="i === 3 ? 'bg-black border-black text-white' : 'bg-white border-black text-black'"
+              >
+                <span class="text-lg font-bold">{{ i + 1 }}</span>
               </div>
-              <h3 class="font-bold text-black text-lg mb-3">Shipment Created</h3>
-              <p class="text-gray-600 leading-relaxed">Your tracking number is generated when your shipment is registered</p>
-            </div>
-
-            <div class="relative text-center">
-              <div class="relative z-10 w-20 h-20 bg-white border-2 border-black text-black rounded-full flex items-center justify-center mx-auto mb-6">
-                <span class="text-2xl font-bold">2</span>
-              </div>
-              <h3 class="font-bold text-black text-lg mb-3">Real-Time Updates</h3>
-              <p class="text-gray-600 leading-relaxed">Get instant notifications as your package moves through our network</p>
-            </div>
-
-            <div class="relative text-center">
-              <div class="relative z-10 w-20 h-20 bg-white border-2 border-black text-black rounded-full flex items-center justify-center mx-auto mb-6">
-                <span class="text-2xl font-bold">3</span>
-              </div>
-              <h3 class="font-bold text-black text-lg mb-3">Live Location</h3>
-              <p class="text-gray-600 leading-relaxed">Track your package's current location and estimated delivery time</p>
-            </div>
-
-            <div class="relative text-center">
-              <div class="relative z-10 w-20 h-20 bg-black border-2 border-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
-                <span class="text-2xl font-bold">4</span>
-              </div>
-              <h3 class="font-bold text-black text-lg mb-3">Delivery Confirmed</h3>
-              <p class="text-gray-600 leading-relaxed">Receive confirmation when your package is safely delivered</p>
+              <h3 class="font-bold text-black text-sm sm:text-base mb-1.5">{{ step.title }}</h3>
+              <p class="text-gray-600 text-xs sm:text-sm leading-relaxed">{{ step.desc }}</p>
             </div>
           </div>
         </div>
@@ -620,6 +485,15 @@ const isTracking = ref(false)
 const error = ref<string | null>(null)
 const shipment = ref<ITrackingShipment | null>(null)
 const resultsSection = ref<HTMLElement | null>(null)  // ← added ref for scroll target
+
+
+  const steps = [
+  { title: 'Shipment Created', desc: 'Your tracking number is generated when your shipment is registered' },
+  { title: 'Real-Time Updates', desc: 'Get instant notifications as your package moves through our network' },
+  { title: 'Live Location', desc: "Track your package's current location and estimated delivery time" },
+  { title: 'Delivery Confirmed', desc: 'Receive confirmation when your package is safely delivered' },
+]
+
 
 const handleTrack = async () => {
   if (!trackingId.value.trim()) {

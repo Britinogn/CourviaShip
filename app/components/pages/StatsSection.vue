@@ -1,38 +1,48 @@
 <template>
-  <section class="py-20 bg-green-600">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <!-- Stat 1: Packages Delivered -->
+  <section class="py-12 sm:py-16 bg-green-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        
+        <!-- Stat 1 -->
         <div class="text-center">
-          <div class="text-5xl md:text-6xl font-bold text-white mb-2">
-            {{ animatedPackages }}+
+          <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1 sm:mb-2">
+            {{ animatedPackages.toLocaleString() }}+
           </div>
-          <p class="text-white text-lg font-medium">Packages Delivered</p>
+          <p class="text-white/90 text-sm sm:text-base font-medium">
+            Packages Delivered
+          </p>
         </div>
 
-        <!-- Stat 2: Active Shipments -->
+        <!-- Stat 2 -->
         <div class="text-center">
-          <div class="text-5xl md:text-6xl font-bold text-white mb-2">
-            {{ animatedShipments }}+
+          <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1 sm:mb-2">
+            {{ animatedShipments.toLocaleString() }}+
           </div>
-          <p class="text-white text-lg font-medium">Active Shipments</p>
+          <p class="text-white/90 text-sm sm:text-base font-medium">
+            Active Shipments
+          </p>
         </div>
 
-        <!-- Stat 3: Registered Users -->
+        <!-- Stat 3 -->
         <div class="text-center">
-          <div class="text-5xl md:text-6xl font-bold text-white mb-2">
-            {{ animatedUsers }}+
+          <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1 sm:mb-2">
+            {{ animatedUsers.toLocaleString() }}+
           </div>
-          <p class="text-white text-lg font-medium">Registered Users</p>
+          <p class="text-white/90 text-sm sm:text-base font-medium">
+            Registered Users
+          </p>
         </div>
 
-        <!-- Stat 4: Countries Covered -->
+        <!-- Stat 4 -->
         <div class="text-center">
-          <div class="text-5xl md:text-6xl font-bold text-white mb-2">
-            {{ animatedCountries }}+
+          <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1 sm:mb-2">
+            {{ animatedCountries.toLocaleString() }}+
           </div>
-          <p class="text-white text-lg font-medium">Countries Covered</p>
+          <p class="text-white/90 text-sm sm:text-base font-medium">
+            Countries Covered
+          </p>
         </div>
+
       </div>
     </div>
   </section>
@@ -50,31 +60,27 @@ const finalUsers = 10000
 const finalCountries = 150
 
 const animateCounter = (
-  current: Ref<number>, 
-  target: number, 
+  current: Ref<number>,
+  target: number,
   duration: number = 2000
 ) => {
   const startTime = Date.now()
   const step = () => {
     const elapsed = Date.now() - startTime
     const progress = Math.min(elapsed / duration, 1)
-    
-    // Easing function for smooth animation
     const easeOut = 1 - Math.pow(1 - progress, 3)
     current.value = Math.floor(easeOut * target)
-    
+
     if (progress < 1) {
       requestAnimationFrame(step)
     } else {
       current.value = target
     }
   }
-  
   requestAnimationFrame(step)
 }
 
 onMounted(() => {
-  // Start animations with slight delays for staggered effect
   animateCounter(animatedPackages, finalPackages, 2000)
   setTimeout(() => animateCounter(animatedShipments, finalShipments, 2000), 100)
   setTimeout(() => animateCounter(animatedUsers, finalUsers, 2000), 200)
