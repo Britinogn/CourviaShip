@@ -83,7 +83,12 @@ export const useShipmentStore = defineStore('shipment', () => {
     }
 
     const deleteShipment = (trackingId: string) => {
-        shipments.value = shipments.value.filter(s => s._id !== trackingId)
+        shipments.value = shipments.value.filter(s => s.trackingId !== trackingId)
+    }
+
+    const deleteShipments = (trackingIds: string[]) => {
+        const idsToDelete = new Set(trackingIds)
+        shipments.value = shipments.value.filter(s => !idsToDelete.has(s.trackingId))
     }
 
     // --- Return ---
@@ -110,6 +115,7 @@ export const useShipmentStore = defineStore('shipment', () => {
         setError,
         addShipment,
         updateShipment,
-        deleteShipment
+        deleteShipment,
+        deleteShipments
     }
 })

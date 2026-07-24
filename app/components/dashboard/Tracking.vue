@@ -53,6 +53,48 @@
             <span>{{ isRefreshing ? 'Refreshing...' : 'Refresh' }}</span>
           </button>
         </div>
+
+        <div
+          v-if="shipments.length > 0"
+          class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-gray-100 pt-4"
+        >
+          <div class="flex flex-wrap items-center gap-3">
+            <label class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <input
+                type="checkbox"
+                class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                :checked="allVisibleSelected"
+                :disabled="filteredShipments.length === 0 || isBulkDeleting"
+                @change="toggleSelectVisible"
+              />
+              <span>Select visible</span>
+            </label>
+
+            <span class="text-sm text-gray-500">
+              {{ selectedCount }} selected
+            </span>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-2">
+            <button
+              type="button"
+              :disabled="selectedCount === 0 || isBulkDeleting"
+              class="px-4 py-2.5 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              @click="clearSelection"
+            >
+              Clear
+            </button>
+
+            <button
+              type="button"
+              :disabled="selectedCount === 0 || isBulkDeleting"
+              class="px-4 py-2.5 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              @click="showBulkDeleteModal = true"
+            >
+              Delete selected
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Loading State -->
@@ -79,8 +121,11 @@
           v-for="shipment in filteredShipments"
           :key="shipment.trackingId"
           :shipment="shipment"
+          selectable
+          :selected="isSelected(shipment.trackingId)"
+          @toggle-select="toggleSelection"
           @edit="openUpdateModal"
-          @delete="(id: string) => confirmDelete(shipments.find(s => s.trackingId === id)!)"
+          @delete="confirmDeleteById"
         />
       </div>
 
@@ -128,6 +173,15 @@
       @confirm="handleDelete"
       @cancel="showDeleteModal = false"
     />
+
+    <ConfirmModal
+      v-if="showBulkDeleteModal"
+      title="Delete Selected Shipments"
+      :message="`Are you sure you want to delete ${selectedCount} selected shipment${selectedCount === 1 ? '' : 's'}? This action cannot be undone.`"
+      :confirmText="isBulkDeleting ? 'Deleting...' : 'Delete selected'"
+      @confirm="handleBulkDelete"
+      @cancel="showBulkDeleteModal = false"
+    />
   </div>
 </template>
 
@@ -139,16 +193,19 @@ import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { useShipments } from '@/composables/useShipments'
 import type { IShipment } from '@/types'
 
-const { getAllShipment, updateShipment, deleteShipment } = useShipments()
+const { getAllShipment, updateShipment, deleteShipment, deleteMultipleShipments } = useShipments()
 
 const shipments = ref<IShipment[]>([])
 const isLoading = ref(false)
 const isRefreshing = ref(false)
+const isBulkDeleting = ref(false)
 const showModal = ref(false)
 const showDeleteModal = ref(false)
+const showBulkDeleteModal = ref(false)
 const selectedShipment = ref<IShipment | null>(null)
 const shipmentToDelete = ref<IShipment | null>(null)
 const searchQuery = ref('')
+const selectedTrackingIds = ref<string[]>([])
 
 const filteredShipments = computed(() => {
   if (!searchQuery.value) return shipments.value
@@ -162,11 +219,23 @@ const filteredShipments = computed(() => {
   )
 })
 
+const selectedCount = computed(() => selectedTrackingIds.value.length)
+
+const visibleTrackingIds = computed(() =>
+  filteredShipments.value.map(shipment => shipment.trackingId).filter(Boolean)
+)
+
+const allVisibleSelected = computed(() =>
+  visibleTrackingIds.value.length > 0 &&
+  visibleTrackingIds.value.every(trackingId => selectedTrackingIds.value.includes(trackingId))
+)
+
 async function fetchShipments() {
   isLoading.value = true
   try {
     const { data } = await getAllShipment()
     shipments.value = data || []
+    pruneSelection()
   } catch (error) {
     console.error('Failed to fetch shipments:', error)
   } finally {
@@ -179,6 +248,7 @@ async function refreshShipments() {
   try {
     const { data } = await getAllShipment()
     shipments.value = data || []
+    pruneSelection()
   } catch (error) {
     console.error('Failed to refresh shipments:', error)
   } finally {
@@ -215,17 +285,79 @@ function confirmDelete(shipment: IShipment) {
   showDeleteModal.value = true
 }
 
+function confirmDeleteById(trackingId: string) {
+  const shipment = shipments.value.find(s => s.trackingId === trackingId)
+  if (!shipment) return
+
+  confirmDelete(shipment)
+}
+
+function isSelected(trackingId: string) {
+  return selectedTrackingIds.value.includes(trackingId)
+}
+
+function toggleSelection(trackingId: string) {
+  if (isSelected(trackingId)) {
+    selectedTrackingIds.value = selectedTrackingIds.value.filter(id => id !== trackingId)
+    return
+  }
+
+  selectedTrackingIds.value = [...selectedTrackingIds.value, trackingId]
+}
+
+function toggleSelectVisible() {
+  if (allVisibleSelected.value) {
+    const visibleIds = new Set(visibleTrackingIds.value)
+    selectedTrackingIds.value = selectedTrackingIds.value.filter(id => !visibleIds.has(id))
+    return
+  }
+
+  selectedTrackingIds.value = Array.from(new Set([
+    ...selectedTrackingIds.value,
+    ...visibleTrackingIds.value
+  ]))
+}
+
+function clearSelection() {
+  selectedTrackingIds.value = []
+}
+
+function pruneSelection() {
+  const existingIds = new Set(shipments.value.map(shipment => shipment.trackingId))
+  selectedTrackingIds.value = selectedTrackingIds.value.filter(id => existingIds.has(id))
+}
+
 async function handleDelete() {
   if (!shipmentToDelete.value?.trackingId) return
   try {
     const { error } = await deleteShipment(shipmentToDelete.value.trackingId)
     if (error) throw new Error(error)
     await fetchShipments()
+    selectedTrackingIds.value = selectedTrackingIds.value.filter(id => id !== shipmentToDelete.value?.trackingId)
   } catch (err) {
     console.error('Delete failed:', err)
   } finally {
     showDeleteModal.value = false
     shipmentToDelete.value = null
+  }
+}
+
+async function handleBulkDelete() {
+  if (selectedTrackingIds.value.length === 0 || isBulkDeleting.value) return
+
+  isBulkDeleting.value = true
+  try {
+    const trackingIds = [...selectedTrackingIds.value]
+    const { error } = await deleteMultipleShipments(trackingIds)
+    if (error) throw new Error(error)
+
+    clearSelection()
+    await fetchShipments()
+  } catch (err) {
+    console.error('Bulk delete failed:', err)
+  } finally {
+    isBulkDeleting.value = false
+    showBulkDeleteModal.value = false
   }
 }
 

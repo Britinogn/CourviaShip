@@ -187,6 +187,36 @@ export function useShipments() {
     }
   }
 
+  async function deleteMultipleShipments(trackingIds: string[]) {
+    try {
+      shipmentStore.setPending(true);
+      shipmentStore.setError(null);
+
+      const response = await $fetch<any>('/shipments/bulk', {
+        ...apiClient(),
+        method: 'DELETE',
+        body: { trackingIds }
+      });
+
+      shipmentStore.deleteShipments(trackingIds);
+
+      return {
+        data: response,
+        error: null
+      };
+    } catch (error: any) {
+      const errorMessage = error.data?.message || error.message || 'Failed to delete selected shipments';
+      shipmentStore.setError(errorMessage);
+
+      return {
+        data: null,
+        error: errorMessage
+      };
+    } finally {
+      shipmentStore.setPending(false);
+    }
+  }
+
 
   // async function getShipmentAdminByTrackingId(trackingId: string) {
   //   try {
@@ -249,6 +279,7 @@ export function useShipments() {
     createShipment,
     updateShipment,
     deleteShipment,
+    deleteMultipleShipments,
     getShipmentAdminByTrackingId
   };
 }

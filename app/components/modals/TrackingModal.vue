@@ -1,10 +1,27 @@
 <template>
   <div
     class="group relative flex flex-col lg:flex-row lg:items-center gap-4 p-4 sm:p-5 lg:p-6 bg-white border-2 border-gray-200 rounded-2xl hover:border-green-600 hover:shadow-xl transition-all duration-300"
-    :class="{ 'opacity-60 pointer-events-none': isDeleting }"
+    :class="{
+      'opacity-60 pointer-events-none': isDeleting,
+      'border-green-600 bg-green-50/40': selected
+    }"
   >
+    <label
+      v-if="selectable"
+      class="absolute right-4 top-4 flex h-6 w-6 items-center justify-center"
+      :aria-label="`Select shipment ${shipment.trackingId}`"
+    >
+      <input
+        type="checkbox"
+        class="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+        :checked="selected"
+        :disabled="isDeleting"
+        @change="$emit('toggle-select', shipment.trackingId)"
+      />
+    </label>
+
     <!-- Left Info -->
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 flex-1 min-w-0">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 flex-1 min-w-0 pr-8">
       
       <!-- Tracking ID -->
       <div class="sm:min-w-[160px] lg:min-w-[180px] shrink-0">
@@ -106,11 +123,14 @@ import type { IShipment } from '@/types'
 
 const props = defineProps<{
   shipment: IShipment
+  selectable?: boolean
+  selected?: boolean
 }>()
 
 const emit = defineEmits<{
   edit: [shipment: IShipment]
   delete: [trackingId: string]
+  'toggle-select': [trackingId: string]
 }>()
 
 const isDeleting = ref(false)
