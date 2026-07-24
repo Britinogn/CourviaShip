@@ -13,7 +13,7 @@
         <iframe
           v-if="receiptPdf"
           :src="`data:application/pdf;base64,${receiptPdf}`"
-          class="w-full h-[600px] border"
+          class="w-full h-150 border"
         ></iframe>
         <p v-else>No receipt available.</p>
       </div>

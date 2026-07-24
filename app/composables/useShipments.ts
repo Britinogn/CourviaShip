@@ -188,25 +188,60 @@ export function useShipments() {
   }
 
 
+  // async function getShipmentAdminByTrackingId(trackingId: string) {
+  //   try {
+  //     shipmentStore.setPending(true)
+  //     shipmentStore.setError(null)
+
+  //     const response = await $fetch<IShipment>(`/shipments/${trackingId}`, {
+  //       ...apiClient(),
+  //       method: 'GET'
+  //     })
+
+  //     return { data: response, error: null }
+  //   } catch (error: any) {
+  //     const message = error.data?.message || error.message || 'Failed to load shipment'
+  //     return { data: null, error: message }
+  //   } finally {
+  //     shipmentStore.setPending(false)
+  //   }
+  // }
+
   async function getShipmentAdminByTrackingId(trackingId: string) {
-  try {
-    shipmentStore.setPending(true)
-    shipmentStore.setError(null)
-
-    const response = await $fetch<IShipment>(`/shipments/admin/${trackingId}`, {
-      ...apiClient(),
-      method: 'GET'
-    })
-
-    return { data: response, error: null }
-  } catch (error: any) {
-    const message = error.data?.message || error.message || 'Failed to load shipment'
-    return { data: null, error: message }
-  } finally {
-    shipmentStore.setPending(false)
+    try {
+      shipmentStore.setPending(true)
+      shipmentStore.setError(null)
+  
+      const response = await $fetch<any>(`/shipments/${trackingId}`, {
+        ...apiClient(),
+        method: 'GET'
+      })
+  
+      // Backend returns: { status: true, message: "...", data: { shipment: {...} } }
+      const shipment = response?.data?.shipment
+  
+      if (!shipment || !shipment.trackingId) {
+        return {
+          data: null,
+          error: 'Invalid shipment data received from server'
+        }
+      }
+  
+      return {
+        data: shipment,
+        error: null
+      }
+    } catch (error: any) {
+      const message =
+        error.data?.message || error.message || 'Failed to load shipment'
+      return {
+        data: null,
+        error: message
+      }
+    } finally {
+      shipmentStore.setPending(false)
+    }
   }
-}
-
 
   return {
     getAllShipment,
