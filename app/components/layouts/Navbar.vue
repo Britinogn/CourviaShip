@@ -122,11 +122,11 @@
           </nav>
 
           <!-- Mobile Menu Footer -->
-          <div class="px-6 py-4 border-t border-white/5">
+          <!-- <div class="px-6 py-4 border-t border-white/5">
             <p class="text-xs text-gray-500 text-center">
               © 2024 {{ appName }}. Delivering Excellence.
             </p>
-          </div>
+          </div> -->
         </div>
       </transition>
     </div>
