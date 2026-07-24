@@ -12,19 +12,15 @@
             class="fixed inset-y-0 left-0 top-0 z-50 w-72 bg-gradient-to-b from-emerald-700 via-emerald-800 to-emerald-900 min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl"
             :class="{ 'translate-x-0': isOpen, '-translate-x-full lg:translate-x-0': !isOpen }"
         >
-
             <!-- Logo Section -->
             <div class="h-24 flex items-center justify-between px-6 border-b border-white/10">
-
                 <NuxtLink to="/dashboard" class="flex items-center space-x-3" @click="onClose">
-
                     <div class="w-12 h-12 bg-white/95 rounded-xl flex items-center justify-center shadow-lg shadow-black/10">
                         <svg class="w-7 h-7 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                         </svg>
                     </div>
-
                     <div>
                         <h2 class="text-xl font-bold text-white">
                             CourviaShip
@@ -33,9 +29,7 @@
                             Logistics Manager
                         </p>
                     </div>
-
                 </NuxtLink>
-
 
                 <!-- Close button -->
                 <button
@@ -49,55 +43,39 @@
                         d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
-
             </div>
 
 
             <!-- User Profile -->
             <div class="px-6 py-5 border-b border-white/10">
-
                 <div class="flex items-center gap-3 bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
-
                     <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-emerald-700 font-bold text-xl shadow-lg">
                         {{ userInitials }}
                     </div>
-
-
                     <div class="flex-1 min-w-0">
-
                         <p class="font-semibold text-white truncate text-base">
                             {{ userName }}
                         </p>
-
                         <p class="text-xs text-emerald-100 truncate flex items-center gap-2">
                             <span class="w-2 h-2 bg-emerald-300 rounded-full animate-pulse"></span>
                             {{ userEmail }}
                         </p>
-
                     </div>
-
                 </div>
-
             </div>
-
-
 
             <!-- Navigation -->
             <nav class="flex-1 px-5 py-6 overflow-y-auto">
-
                 <div
                     v-for="(group, groupIndex) in navGroups"
                     :key="group.label"
                     :class="groupIndex > 0 ? 'mt-7 pt-7 border-t border-white/10' : ''"
                 >
-
                     <p class="px-3 text-xs font-semibold text-emerald-200/70 uppercase tracking-wider mb-3">
                         {{ group.label }}
                     </p>
 
-
                     <div class="space-y-2">
-
                         <NuxtLink
                             v-for="item in group.items"
                             :key="item.path"
@@ -111,14 +89,11 @@
                             ]"
                         >
 
-
                             <!-- Active bar -->
                             <div
                                 v-if="isActive(item.path)"
                                 class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-600 rounded-r-full"
                             />
-
-
 
                             <!-- Icon -->
                             <div
@@ -134,14 +109,10 @@
 
                             </div>
 
-
-
                             <!-- Label -->
                             <span class="text-sm font-semibold">
                                 {{ item.name }}
                             </span>
-
-
 
                             <!-- Active arrow -->
                             <svg
@@ -156,23 +127,15 @@
                                 d="M9 5l7 7-7 7"/>
 
                             </svg>
-
-
                         </NuxtLink>
-
                     </div>
-
                 </div>
-
-
 
                 <!-- Quick Actions -->
                 <div class="mt-8 pt-7 border-t border-white/10">
-
                     <p class="px-3 text-xs font-semibold text-emerald-200/70 uppercase tracking-wider mb-3">
                         Quick Actions
                     </p>
-
 
                     <button
                         class="w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-emerald-50 bg-white/5 border border-white/10 hover:bg-white/15 transition-all group"
@@ -185,24 +148,16 @@
                             </svg>
                         </div>
 
-
                         <span class="text-sm font-semibold">
                             New Shipment
                         </span>
-
                     </button>
 
                 </div>
-
-
             </nav>
-
-
-
 
             <!-- Logout -->
             <div class="p-5 border-t border-white/10 bg-black/10">
-
                 <button
                     @click="handleLogout"
                     class="w-full flex items-center gap-3 px-4 py-3.5 text-white bg-red-500/10 hover:bg-red-500/20 rounded-2xl transition-all font-semibold border border-red-400/20"
@@ -218,20 +173,13 @@
                         </svg>
 
                     </div>
-
-
                     <span class="text-sm">
                         Logout
                     </span>
-
-
                 </button>
 
             </div>
-
-
         </aside>
-
     </div>
 </template>
 
