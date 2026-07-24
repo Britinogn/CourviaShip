@@ -22,44 +22,128 @@
             </div>
 
             <!-- Center: Search Bar (Desktop) -->
-            <!-- <div class="md:block flex-1 max-w-xl mx-8">
+            <!-- Activated: search by tracking / consignment ID, pushes to the tracking page on enter -->
+            <div class="hidden md:block flex-1 max-w-xl mx-8">
                 <div class="relative">
                     <input
                         type="text"
                         v-model="searchQuery"
                         placeholder="Search by tracking ID..."
-                        class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:border-green-500 outline-none transition-all text-sm"
+                        class="w-full pl-11 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:border-green-500 outline-none transition-all text-sm"
                         @keyup.enter="handleSearch"
                     />
                     <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
+                    <!-- Clear button, only shows once the user has typed something -->
+                    <button
+                        v-if="searchQuery"
+                        @click="searchQuery = ''"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-200 transition-colors"
+                        aria-label="Clear search"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
-            </div> -->
+            </div>
 
             <!-- Right Side Actions -->
             <div class="flex items-center gap-2">
 
                 <!-- Notifications -->
-                <button class="relative p-2.5 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all group">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    <!-- Notification Badge -->
-                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 rounded-full ring-2 ring-white"></span>
-                </button>
+                <div class="relative" ref="notificationsRef">
+                    <button
+                        @click="toggleNotifications"
+                        class="relative p-2.5 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all group"
+                        aria-label="Notifications"
+                    >
+                        <!-- <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg> -->
+                        <!-- Notification Badge: only shows when there are unread notifications -->
+                        <!-- <span
+                            v-if="unreadCount > 0"
+                            class="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 rounded-full ring-2 ring-white"
+                        ></span> -->
+                    </button>
+
+                    <!-- Notifications Dropdown -->
+                    <Transition
+                        enter-active-class="transition ease-out duration-100"
+                        enter-from-class="transform opacity-0 scale-95"
+                        enter-to-class="transform opacity-100 scale-100"
+                        leave-active-class="transition ease-in duration-75"
+                        leave-from-class="transform opacity-100 scale-100"
+                        leave-to-class="transform opacity-0 scale-95"
+                    >
+                        <div
+                            v-if="isNotificationsOpen"
+                            class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
+                        >
+                            <!-- Header -->
+                            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900">Notifications</p>
+                                <button
+                                    v-if="unreadCount > 0"
+                                    @click="markAllAsRead"
+                                    class="text-xs font-medium text-green-600 hover:text-green-700"
+                                >
+                                    Mark all as read
+                                </button>
+                            </div>
+
+                            <!-- List -->
+                            <div class="max-h-80 overflow-y-auto">
+                                <!-- Empty state -->
+                                <div v-if="notifications.length === 0" class="px-4 py-8 text-center text-sm text-gray-400">
+                                    You're all caught up.
+                                </div>
+
+                                <button
+                                    v-for="notification in notifications"
+                                    :key="notification.id"
+                                    @click="markAsRead(notification.id)"
+                                    class="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-green-50 transition-colors border-b border-gray-50 last:border-b-0"
+                                    :class="{ 'bg-green-50/40': !notification.read }"
+                                >
+                                    <!-- Unread dot -->
+                                    <span
+                                        class="mt-1.5 w-2 h-2 rounded-full shrink-0"
+                                        :class="notification.read ? 'bg-transparent' : 'bg-green-500'"
+                                    ></span>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate">{{ notification.title }}</p>
+                                        <p class="text-xs text-gray-500 mt-0.5 line-clamp-2">{{ notification.message }}</p>
+                                        <p class="text-xs text-gray-400 mt-1">{{ notification.time }}</p>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- Footer -->
+                            <NuxtLink
+                                to="/dashboard/notifications"
+                                @click="closeNotifications"
+                                class="block text-center text-sm font-semibold text-green-600 hover:text-green-700 py-3 border-t border-gray-100"
+                            >
+                                View all notifications
+                            </NuxtLink>
+                        </div>
+                    </Transition>
+                </div>
 
                 <!-- Quick Actions -->
-                <button 
-                    disabled
-                    class="hidden lg:flex items-center gap-2 px-4 py-2.5 bg-gray-300 text-gray-500 text-sm font-semibold rounded-xl cursor-not-allowed opacity-60"
-                    title="Coming soon"
+                <!-- Enabled: now links to the new shipment creation page instead of being a disabled placeholder -->
+                <NuxtLink
+                    to="/dashboard/shipments"
+                    class="hidden lg:flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-semibold rounded-xl hover:bg-green-700 transition-all shadow-sm"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     <span>New Shipment</span>
-                </button>
+                </NuxtLink>
 
                 <!-- User Menu Dropdown -->
                 <div class="relative" ref="dropdownRef">
@@ -245,12 +329,75 @@ const handleLogout = () => {
     logout()
 }
 
+// --- Notifications ---
+// TODO: replace this mock list with a real fetch from your notifications API/store
+interface Notification {
+    id: number
+    title: string
+    message: string
+    time: string
+    read: boolean
+}
+
+const notifications = ref<Notification[]>([
+    {
+        id: 1,
+        title: 'Shipment delivered',
+        message: 'Consignment #CS-10234 was delivered successfully.',
+        time: '5 minutes ago',
+        read: false,
+    },
+    {
+        id: 2,
+        title: 'New consignment created',
+        message: 'A new shipment #CS-10241 has been added to the queue.',
+        time: '1 hour ago',
+        read: false,
+    },
+    {
+        id: 3,
+        title: 'Payment received',
+        message: 'Payment confirmed for invoice #INV-3382.',
+        time: 'Yesterday',
+        read: true,
+    },
+])
+
+const isNotificationsOpen = ref(false)
+const notificationsRef = ref<HTMLElement | null>(null)
+
+// Count of unread notifications, used to show/hide the badge dot
+const unreadCount = computed(() => notifications.value.filter(n => !n.read).length)
+
+const toggleNotifications = () => {
+    isNotificationsOpen.value = !isNotificationsOpen.value
+}
+
+const closeNotifications = () => {
+    isNotificationsOpen.value = false
+}
+
+const markAsRead = (id: number) => {
+    const notification = notifications.value.find(n => n.id === id)
+    if (notification) {
+        notification.read = true
+    }
+}
+
+const markAllAsRead = () => {
+    notifications.value.forEach(n => (n.read = true))
+}
+
 // Close dropdown when clicking outside
 onMounted(() => {
     const handleClickOutside = (event: MouseEvent) => {
         const target = event.target as HTMLElement
         if (dropdownRef.value && !dropdownRef.value.contains(target)) {
             closeDropdown()
+        }
+        // Also close the notifications panel when clicking outside of it
+        if (notificationsRef.value && !notificationsRef.value.contains(target)) {
+            closeNotifications()
         }
     }
     
