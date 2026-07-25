@@ -104,7 +104,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="mt-6 pt-6 border-t border-white/10">
+        <!-- <div class="mt-6 pt-6 border-t border-white/10">
           <p class="px-3 text-[11px] font-semibold text-emerald-200/70 uppercase tracking-wider mb-2">
             Quick Actions
           </p>
@@ -119,7 +119,7 @@
             </div>
             <span class="text-sm font-medium">New Shipment</span>
           </button>
-        </div>
+        </div> -->
       </nav>
 
       <!-- Logout -->
@@ -182,18 +182,18 @@ const navGroups: NavGroup[] = [
       { name: 'Tracking', path: '/dashboard/tracking', icon: LocateIcon },
     ],
   },
-  {
-    label: 'Customers',
-    items: [
-      { name: 'Customers', path: '/dashboard/customers', icon: UsersIcon },
-    ],
-  },
-  {
-    label: 'Insights',
-    items: [
-      { name: 'Analytics', path: '/dashboard/analytics', icon: ChartArea },
-    ],
-  },
+  // {
+  //   label: 'Customers',
+  //   items: [
+  //     { name: 'Customers', path: '/dashboard/customers', icon: UsersIcon },
+  //   ],
+  // },
+  // {
+  //   label: 'Insights',
+  //   items: [
+  //     { name: 'Analytics', path: '/dashboard/analytics', icon: ChartArea },
+  //   ],
+  // },
   {
     label: 'Settings',
     items: [
