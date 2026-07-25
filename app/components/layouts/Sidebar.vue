@@ -22,7 +22,7 @@
             </svg>
           </div>
           <div class="min-w-0">
-            <h2 class="text-lg font-bold text-white leading-tight truncate">{{ brandName }}</h2>
+            <h2 class="text-lg font-bold text-white leading-tight truncate">{{ siteName }}</h2>
             <p class="text-[11px] text-emerald-100">Logistics Manager</p>
           </div>
         </NuxtLink>
@@ -212,7 +212,7 @@ const handleLogout = () => {
   logout()
 }
 
-const brandName = computed(() => siteName.value || 'CourviaShip')
+// const brandName = computed(() => siteName.value || 'CourviaShip')
 const userName = computed(() => authStore.user?.username || 'User')
 const userEmail = computed(() => authStore.user?.email || 'user@example.com')
 const userAvatar = computed(() => {
