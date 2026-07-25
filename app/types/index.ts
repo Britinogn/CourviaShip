@@ -30,6 +30,24 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
+  avatarUrl?: string;
+}
+
+export interface IProfileSettings {
+  _id?: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+}
+
+export interface ICompanySettings {
+  _id?: string;
+  companyName: string;
+  supportEmail: string;
+  supportPhone: string;
+  websiteUrl: string;
+  address: string;
+  logoUrl?: string;
 }
 
 export interface IPerson extends IAddress {
