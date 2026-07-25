@@ -1,5 +1,6 @@
 import { useAuthStore } from '~/stores/auth'
 import { useToast } from '~/composables/useToast'
+import { setAppName, setSiteName } from '~/utils/appName'
 
 interface ProfileSettings {
   _id?: string
@@ -42,6 +43,22 @@ interface CompanyFormState {
 export function useSettings() {
   const authStore = useAuthStore()
   const toast = useToast()
+  const runtimeConfig = useRuntimeConfig()
+
+  const resolveAssetUrl = (value?: string) => {
+    if (!value) return ''
+
+    if (/^https?:\/\//i.test(value) || value.startsWith('data:')) {
+      return value
+    }
+
+    if (value.startsWith('/uploads/')) {
+      const mediaBaseUrl = runtimeConfig.public.mediaBaseURL || 'http://localhost:5000'
+      return `${mediaBaseUrl}${value}`
+    }
+
+    return value
+  }
 
   const profile = ref<ProfileSettings | null>(null)
   const profileForm = ref<ProfileFormState>({ username: '', email: '', avatarUrl: '' })
@@ -79,7 +96,7 @@ export function useSettings() {
         profileForm.value = {
           username: profileData.username || '',
           email: profileData.email || '',
-          avatarUrl: profileData.avatarUrl || '',
+          avatarUrl: resolveAssetUrl(profileData.avatarUrl),
         }
       }
     } catch (error: any) {
@@ -108,12 +125,11 @@ export function useSettings() {
         profileForm.value = {
           username: updatedProfile.username || '',
           email: updatedProfile.email || '',
-          avatarUrl: updatedProfile.avatarUrl || '',
+          avatarUrl: resolveAssetUrl(updatedProfile.avatarUrl),
         }
 
         if (authStore.user) {
-          authStore.setUser({
-            ...authStore.user,
+          authStore.updateUser({
             username: updatedProfile.username,
             email: updatedProfile.email,
             avatarUrl: updatedProfile.avatarUrl,
@@ -188,7 +204,15 @@ export function useSettings() {
         profileForm.value = {
           username: updatedProfile.username || '',
           email: updatedProfile.email || '',
-          avatarUrl: updatedProfile.avatarUrl || '',
+          avatarUrl: resolveAssetUrl(updatedProfile.avatarUrl),
+        }
+
+        if (authStore.user) {
+          authStore.updateUser({
+            username: updatedProfile.username,
+            email: updatedProfile.email,
+            avatarUrl: updatedProfile.avatarUrl,
+          })
         }
       }
 
@@ -220,7 +244,15 @@ export function useSettings() {
           supportPhone: companyData.supportPhone || '',
           websiteUrl: companyData.websiteUrl || '',
           address: companyData.address || '',
-          logoUrl: companyData.logoUrl || '',
+          logoUrl: resolveAssetUrl(companyData.logoUrl),
+        }
+
+        if (companyData.companyName) {
+          setAppName(companyData.companyName)
+        }
+
+        if (companyData.websiteUrl) {
+          setSiteName(companyData.websiteUrl)
         }
       }
     } catch (error: any) {
@@ -255,7 +287,15 @@ export function useSettings() {
           supportPhone: updatedCompany.supportPhone || '',
           websiteUrl: updatedCompany.websiteUrl || '',
           address: updatedCompany.address || '',
-          logoUrl: updatedCompany.logoUrl || '',
+          logoUrl: resolveAssetUrl(updatedCompany.logoUrl),
+        }
+
+        if (updatedCompany.companyName) {
+          setAppName(updatedCompany.companyName)
+        }
+
+        if (updatedCompany.websiteUrl) {
+          setSiteName(updatedCompany.websiteUrl)
         }
       }
 
@@ -295,7 +335,15 @@ export function useSettings() {
           supportPhone: updatedCompany.supportPhone || '',
           websiteUrl: updatedCompany.websiteUrl || '',
           address: updatedCompany.address || '',
-          logoUrl: updatedCompany.logoUrl || '',
+          logoUrl: resolveAssetUrl(updatedCompany.logoUrl),
+        }
+
+        if (updatedCompany.companyName) {
+          setAppName(updatedCompany.companyName)
+        }
+
+        if (updatedCompany.websiteUrl) {
+          setSiteName(updatedCompany.websiteUrl)
         }
       }
 

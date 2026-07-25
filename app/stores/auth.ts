@@ -53,6 +53,15 @@ export const useAuthStore = defineStore('auth', () => {
         user.value = newUser
     }
 
+    const updateUser = (updates: Partial<AuthUser>) => {
+        if (!user.value) return
+
+        user.value = {
+            ...user.value,
+            ...updates,
+        }
+    }
+
     const setPending = (value: boolean) => {
         pending.value = value
     }
@@ -76,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
         setToken,
         clearToken,
         setUser,
+        updateUser,
         setPending,
         setError
     }

@@ -15,6 +15,11 @@
 
 <script setup lang="ts">
 const sidebarOpen = ref(false)
+const { refreshBranding } = useBranding()
+
+onMounted(() => {
+    refreshBranding()
+})
 
 const toggleSidebar = () => {
     sidebarOpen.value = !sidebarOpen.value

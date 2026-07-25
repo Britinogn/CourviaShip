@@ -9,7 +9,7 @@
 
     <!-- Sidebar -->
     <aside
-      class="fixed inset-y-0 left-0 top-0 z-50 w-64 lg:w-72 bg-gradient-to-b from-emerald-700 via-emerald-800 to-emerald-900 min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl"
+      class="fixed inset-y-0 left-0 top-0 z-50 w-64 lg:w-72 bg-linear-to-b from-emerald-700 via-emerald-800 to-emerald-900 min-h-screen flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl"
       :class="{ 'translate-x-0': isOpen, '-translate-x-full lg:translate-x-0': !isOpen }"
     >
       <!-- Logo Section -->
@@ -21,8 +21,8 @@
                 d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
           </div>
-          <div>
-            <h2 class="text-lg font-bold text-white leading-tight">CourviaShip</h2>
+          <div class="min-w-0">
+            <h2 class="text-lg font-bold text-white leading-tight truncate">{{ brandName }}</h2>
             <p class="text-[11px] text-emerald-100">Logistics Manager</p>
           </div>
         </NuxtLink>
@@ -42,8 +42,9 @@
       <!-- User Profile (more compact) -->
       <div class="px-4 py-4 border-b border-white/10">
         <div class="flex items-center gap-3 bg-white/5 rounded-xl p-3 border border-white/10">
-          <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-emerald-700 font-bold text-lg shrink-0">
-            {{ userInitials }}
+          <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-emerald-700 font-bold text-lg shrink-0 overflow-hidden">
+            <img v-if="userAvatar" :src="userAvatar" alt="User avatar" class="h-full w-full object-cover" />
+            <span v-else>{{ userInitials }}</span>
           </div>
           <div class="flex-1 min-w-0">
             <p class="font-semibold text-white truncate text-sm">{{ userName }}</p>
@@ -142,6 +143,7 @@
 
 <script setup lang="ts">
 import { HomeIcon, ShipIcon, LocateIcon, ChartArea, Settings, UsersIcon } from 'lucide-vue-next'
+import { appName } from '~/utils/appName'
 
 interface NavItem {
   name: string
@@ -164,6 +166,7 @@ const { isOpen, onClose } = defineProps<Props>()
 const route = useRoute()
 const authStore = useAuthStore()
 const { logout } = useAuth()
+const runtimeConfig = useRuntimeConfig()
 
 const navGroups: NavGroup[] = [
   {
@@ -209,8 +212,18 @@ const handleLogout = () => {
   logout()
 }
 
+const brandName = computed(() => appName.value || 'CourviaShip')
 const userName = computed(() => authStore.user?.username || 'User')
 const userEmail = computed(() => authStore.user?.email || 'user@example.com')
+const userAvatar = computed(() => {
+  const avatar = authStore.user?.avatarUrl
+  if (!avatar) return ''
+  if (/^https?:\/\//i.test(avatar) || avatar.startsWith('data:')) return avatar
+  if (avatar.startsWith('/uploads/')) {
+    return `${runtimeConfig.public.mediaBaseURL || 'http://localhost:5000'}${avatar}`
+  }
+  return avatar
+})
 
 const userInitials = computed(() => {
   if (authStore.user?.username) return authStore.user.username.charAt(0).toUpperCase()

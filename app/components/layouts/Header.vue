@@ -151,8 +151,9 @@
                         @click="toggleDropdown"
                         class="flex items-center gap-3 pl-3 pr-4 py-2 hover:bg-gray-50 rounded-xl transition-all border border-transparent hover:border-gray-200"
                     >
-                        <div class="w-9 h-9 bg-linear-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-green-100">
-                            {{ userInitials }}
+                        <div class="w-9 h-9 bg-linear-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm ring-2 ring-green-100 overflow-hidden">
+                            <img v-if="userAvatar" :src="userAvatar" alt="User avatar" class="h-full w-full object-cover" />
+                            <span v-else>{{ userInitials }}</span>
                         </div>
                         <div class="hidden lg:block text-left">
                             <p class="text-sm font-semibold text-gray-900">{{ userName }}</p>
@@ -251,6 +252,8 @@
 </template>
 
 <script setup lang="ts">
+import { appName } from '~/utils/appName'
+
 defineEmits<{
     'toggle-sidebar': []
 }>()
@@ -259,6 +262,7 @@ const authStore = useAuthStore()
 const { logout } = useAuth()
 const router = useRouter()
 const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 
 const searchQuery = ref('')
 const isDropdownOpen = ref(false)
@@ -299,6 +303,15 @@ const currentPageDescription = computed(() => pageInfo.value.description)
 
 const userName = computed(() => authStore.user?.username || authStore.user?.email || 'User')
 const userEmail = computed(() => authStore.user?.email || 'user@example.com')
+const userAvatar = computed(() => {
+    const avatar = authStore.user?.avatarUrl
+    if (!avatar) return ''
+    if (/^https?:\/\//i.test(avatar) || avatar.startsWith('data:')) return avatar
+    if (avatar.startsWith('/uploads/')) {
+        return `${runtimeConfig.public.mediaBaseURL || 'http://localhost:5000'}${avatar}`
+    }
+    return avatar
+})
 const userInitials = computed(() => {
     if (authStore.user?.username) {
         return authStore.user.username.charAt(0).toUpperCase()

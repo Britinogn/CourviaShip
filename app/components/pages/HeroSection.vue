@@ -157,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-const appName = ref('CourviaShip')
+import { appName } from '~/utils/appName'
 const currentSlide = ref(0)
 let intervalId: ReturnType<typeof setInterval> | null = null
 

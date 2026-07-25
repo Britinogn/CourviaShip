@@ -58,6 +58,5 @@
   </template>
   
   <script setup lang="ts">
-  const appName = 'CourviaShip'
-  const appNameShort = 'courviaship'
+  import { appName, appNameShort } from '~/utils/appName'
   </script>

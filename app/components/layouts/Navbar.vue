@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-const appName = 'CourviaShip'
+import { appName } from '~/utils/appName'
 
 const navLinks = [
   { 
