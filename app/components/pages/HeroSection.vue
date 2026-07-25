@@ -22,7 +22,7 @@
                 Global Logistics Solutions
               </h1>
               <p class="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
-                Seamless shipping across borders. Track your shipments in real-time with {{ appName }}, 
+                Seamless shipping across borders. Track your shipments in real-time with {{ siteName }}, 
                 your trusted partner in international freight and logistics management.
               </p>
               <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -61,7 +61,7 @@
                 Fast & Reliable Delivery
               </h1>
               <p class="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
-                Speed meets precision. With {{ appName }}, your packages arrive on time, every time. 
+                Speed meets precision. With {{ siteName }}, your packages arrive on time, every time. 
                 Experience hassle-free shipping with real-time tracking and instant notifications.
               </p>
               <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -103,7 +103,7 @@
                 Advanced Warehouse Solutions
               </h1>
               <p class="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
-                Streamlined inventory management and distribution. {{ appName }} offers 
+                Streamlined inventory management and distribution. {{ siteName }} offers 
                 state-of-the-art warehousing facilities with 24/7 security and climate control.
               </p>
               <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -157,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { appName } from '~/utils/appName'
+import { siteName } from '~/utils/siteName'
 const currentSlide = ref(0)
 let intervalId: ReturnType<typeof setInterval> | null = null
 

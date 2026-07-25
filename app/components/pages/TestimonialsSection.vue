@@ -23,7 +23,7 @@
             </svg>
           </div>
           <p class="text-sm text-gray-600 mb-5 leading-relaxed italic">
-            "{{ appName }} has transformed our supply chain. Fast, reliable, and their tracking system is outstanding. Highly recommended!"
+            "{{ siteName }} has transformed our supply chain. Fast, reliable, and their tracking system is outstanding. Highly recommended!"
           </p>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0">
@@ -84,5 +84,5 @@
 </template>
 
 <script setup lang="ts">
-  const appName = 'CourviaShip'
+  import { siteName } from '../../utils/siteName';
 </script>

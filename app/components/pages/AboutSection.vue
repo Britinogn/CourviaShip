@@ -20,7 +20,7 @@
             Who We Are
           </h2>
           <p class="text-sm sm:text-base text-gray-600 mb-4 leading-relaxed">
-            {{ appName }} is a leading logistics and freight management company dedicated to 
+            {{ siteName }} is a leading logistics and freight management company dedicated to 
             providing seamless shipping solutions across the globe. With years of experience 
             and a commitment to excellence, we ensure your packages reach their destination 
             safely and on time.
@@ -46,5 +46,5 @@
 </template>
 
 <script setup lang="ts">
-const appName = 'CourviaShip'
+import { siteName } from '~/utils/siteName'
 </script>

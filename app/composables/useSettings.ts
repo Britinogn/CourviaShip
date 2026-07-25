@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/stores/auth'
 import { useToast } from '~/composables/useToast'
-import { setAppName, setSiteName } from '~/utils/appName'
+import { setSiteName, setSiteURL } from '~/utils/siteName'
 
 interface ProfileSettings {
   _id?: string
@@ -248,7 +248,7 @@ export function useSettings() {
         }
 
         if (companyData.companyName) {
-          setAppName(companyData.companyName)
+          setSiteName(companyData.companyName)
         }
 
         if (companyData.websiteUrl) {
@@ -291,11 +291,11 @@ export function useSettings() {
         }
 
         if (updatedCompany.companyName) {
-          setAppName(updatedCompany.companyName)
+          setSiteName(updatedCompany.companyName)
         }
 
         if (updatedCompany.websiteUrl) {
-          setSiteName(updatedCompany.websiteUrl)
+          setSiteURL(updatedCompany.websiteUrl)
         }
       }
 
@@ -339,11 +339,11 @@ export function useSettings() {
         }
 
         if (updatedCompany.companyName) {
-          setAppName(updatedCompany.companyName)
+          setSiteName(updatedCompany.companyName)
         }
 
         if (updatedCompany.websiteUrl) {
-          setSiteName(updatedCompany.websiteUrl)
+          setSiteURL(updatedCompany.websiteUrl)
         }
       }
 
@@ -355,6 +355,26 @@ export function useSettings() {
       return false
     } finally {
       savingCompany.value = false
+    }
+  }
+
+  const fetchPublicCompanySettings = async () => {
+    try {
+      const response = await $fetch<{ status: boolean; data: { companyName: string; websiteUrl: string; logoUrl?: string } }>(
+        `${runtimeConfig.public.baseURL}/settings/company/public`
+      )
+
+      if (response?.data?.companyName) {
+        setSiteName(response.data.companyName)
+      }
+      if (response?.data?.websiteUrl) {
+        setSiteURL(response.data.websiteUrl)
+      }
+      if (response?.data?.logoUrl) {
+        setLogoUrl(resolveAssetUrl(response.data.logoUrl))
+      }
+    } catch (error) {
+      console.error('Failed to load public company settings:', error)
     }
   }
 
@@ -375,5 +395,6 @@ export function useSettings() {
     fetchCompanySettings,
     updateCompanySettings,
     uploadCompanyLogoImage,
+    fetchPublicCompanySettings,
   }
 }

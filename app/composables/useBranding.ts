@@ -1,5 +1,5 @@
 import { useSettings } from '~/composables/useSettings'
-import { appName, siteName, setAppName, setSiteName } from '~/utils/appName'
+import { siteName, siteURL, setSiteName, setSiteURL } from '~/utils/siteName'
 
 export function useBranding() {
   const { fetchCompanySettings, companyForm } = useSettings()
@@ -8,20 +8,20 @@ export function useBranding() {
     await fetchCompanySettings()
 
     if (companyForm.value.companyName) {
-      setAppName(companyForm.value.companyName)
+      setSiteName(companyForm.value.companyName)
     }
 
     if (companyForm.value.websiteUrl) {
-      setSiteName(companyForm.value.websiteUrl)
+      setSiteURL(companyForm.value.websiteUrl)
     }
   }
 
-  const currentAppName = computed(() => appName.value)
   const currentSiteName = computed(() => siteName.value)
+  const currentSiteURL = computed(() => siteURL.value)
 
   return {
-    appName: currentAppName,
     siteName: currentSiteName,
+    siteURL: currentSiteURL,
     refreshBranding,
   }
 }

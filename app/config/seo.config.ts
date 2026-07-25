@@ -1,12 +1,12 @@
 // config/seo.config.ts
 
 export const seoConfig = {
-  appName: 'CourviaShip',
+  siteName: 'CourviaShip',
   title: 'CourviaShip - Track & Manage Shipments Worldwide',
   description: 'Real-time shipment tracking, fast logistics solutions, secure delivery updates, and easy management for businesses and individuals. Enter your tracking number to stay updated.',
   keywords: 'shipment tracking, track package, logistics, courier tracking, delivery status, real-time tracking, shipping updates, global logistics, package tracker, CourviaShip',
   url: 'https://courviaship.com', // ← change to your real domain
-  siteName: 'CourviaShip',
+  // siteName: 'CourviaShip',
   locale: 'en_US',
   themeColor: '#10B981', // green-600
   

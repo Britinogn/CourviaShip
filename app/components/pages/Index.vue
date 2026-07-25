@@ -22,7 +22,7 @@
                 Global Logistics Solutions
               </h1>
               <p class="text-xl md:text-2xl text-white mb-8 leading-relaxed">
-                Seamless shipping across borders. Track your shipments in real-time with {{ appName }}, 
+                Seamless shipping across borders. Track your shipments in real-time with {{ siteName }}, 
                 your trusted partner in international freight and logistics management.
               </p>
               <div class="flex gap-4 justify-center">
@@ -56,7 +56,7 @@
                 Fast & Reliable Delivery
               </h1>
               <p class="text-xl md:text-2xl text-white mb-8 leading-relaxed">
-                Speed meets precision. With {{ appName }}, your packages arrive on time, every time. 
+                Speed meets precision. With {{ siteName }}, your packages arrive on time, every time. 
                 Experience hassle-free shipping with real-time tracking and instant notifications.
               </p>
               <div class="flex gap-4 justify-center">
@@ -90,7 +90,7 @@
                 Advanced Warehouse Solutions
               </h1>
               <p class="text-xl md:text-2xl text-white mb-8 leading-relaxed">
-                Streamlined inventory management and distribution. {{ appName }} offers 
+                Streamlined inventory management and distribution. {{ siteName }} offers 
                 state-of-the-art warehousing facilities with 24/7 security and climate control.
               </p>
               <div class="flex gap-4 justify-center">
@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { appName } from '~/utils/appName'
+import { siteName } from '~/utils/siteName'
 const currentSlide = ref(0)
 // let intervalId: NodeJS.Timeout | null = null
 let intervalId: ReturnType<typeof setInterval> | null = null

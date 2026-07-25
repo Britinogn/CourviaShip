@@ -143,7 +143,7 @@
 
 <script setup lang="ts">
 import { HomeIcon, ShipIcon, LocateIcon, ChartArea, Settings, UsersIcon } from 'lucide-vue-next'
-import { appName } from '~/utils/appName'
+import { siteName } from '~/utils/siteName'
 
 interface NavItem {
   name: string
@@ -212,7 +212,7 @@ const handleLogout = () => {
   logout()
 }
 
-const brandName = computed(() => appName.value || 'CourviaShip')
+const brandName = computed(() => siteName.value || 'CourviaShip')
 const userName = computed(() => authStore.user?.username || 'User')
 const userEmail = computed(() => authStore.user?.email || 'user@example.com')
 const userAvatar = computed(() => {

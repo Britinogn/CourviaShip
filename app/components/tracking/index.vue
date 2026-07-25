@@ -447,7 +447,7 @@
       <div class="container mx-auto px-4">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-10 sm:mb-12">
-            <h2 class="text-2xl sm:text-3xl font-bold text-black mb-2">How {{ appName }} Tracking Works</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-black mb-2">How {{ siteName }} Tracking Works</h2>
             <p class="text-sm sm:text-base text-gray-600">Stay informed every step of the way</p>
           </div>
 
@@ -585,10 +585,11 @@ watch(shipment, async (newShipment) => {
   }
 })
 
-const appName = 'CourviaShip'
+import {siteName} from '../../utils/siteName'
+
 
 useSeoMeta({
-  title: `Track Shipment - ${appName}`,
-  description: `Track your ${appName} shipment in real-time. Enter your tracking number to get live updates on your package location and delivery status.`
+  title: `Track Shipment - ${siteName}`,
+  description: `Track your ${siteName} shipment in real-time. Enter your tracking number to get live updates on your package location and delivery status.`
 })
 </script>

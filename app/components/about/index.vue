@@ -14,7 +14,7 @@
             <span class="text-xs font-bold text-white uppercase tracking-wide">Est. 2015</span>
           </div>
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-            About {{ appName }}
+            About {{ siteName }}
           </h1>
           <p class="text-sm sm:text-base md:text-lg text-green-50 max-w-xl mx-auto leading-relaxed">
             Your trusted partner in global logistics and shipping solutions
@@ -47,7 +47,7 @@
               <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Our Story</h2>
               <div class="space-y-3 text-gray-600 text-sm sm:text-base leading-relaxed">
                 <p>
-                  Founded in 2015, {{ appName }} has grown from a small local courier service 
+                  Founded in 2015, {{ siteName }} has grown from a small local courier service 
                   to a comprehensive global logistics provider. Our journey began with a simple 
                   mission: to make shipping easier, faster, and more reliable for everyone.
                 </p>
@@ -161,7 +161,7 @@
               <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Leadership</span>
             </div>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">Our Leadership Team</h2>
-            <p class="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">Meet the people driving {{ appName }} forward</p>
+            <p class="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">Meet the people driving {{ siteName }} forward</p>
           </div>
 
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
@@ -195,7 +195,7 @@
       <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-3xl mx-auto text-center text-white space-y-5 sm:space-y-6">
           <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
-            Ready to Ship with {{ appName }}?
+            Ready to Ship with {{ siteName }}?
           </h2>
           <p class="text-sm sm:text-base text-green-50 max-w-xl mx-auto leading-relaxed">
             Join thousands of satisfied customers who trust us with their logistics needs.
@@ -229,7 +229,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 
-const appName = 'CourviaShip'
+import { siteName } from '~/utils/siteName'
 
 const icon = (d: string) =>
   h('svg', { class: 'w-7 h-7 sm:w-8 sm:h-8 text-green-600', fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
@@ -273,7 +273,7 @@ const team = [
   {
     name: 'John Anderson',
     role: 'Chief Executive Officer',
-    bio: `Leading ${appName} with 20+ years of logistics expertise and a vision for innovation.`,
+    bio: `Leading ${siteName} with 20+ years of logistics expertise and a vision for innovation.`,
     image: '/images/team-1.jpg'
   },
   {
@@ -291,7 +291,7 @@ const team = [
 ]
 
 useSeoMeta({
-  title: `About ${appName} - Global Logistics & Shipping Solutions`,
-  description: `Learn about ${appName}'s mission, vision, and commitment to excellence in global logistics and shipping services.`
+  title: `About ${siteName} - Global Logistics & Shipping Solutions`,
+  description: `Learn about ${siteName}'s mission, vision, and commitment to excellence in global logistics and shipping services.`
 })
 </script>

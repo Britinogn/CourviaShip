@@ -25,6 +25,13 @@
 
 <script setup lang="ts">
 import { useSeo } from '~/composables/useSeo'
+import { useSettings } from '~/composables/useSettings'
 
 useSeo() // applies global defaults
+
+const { fetchPublicCompanySettings } = useSettings()
+
+onMounted(() => {
+  fetchPublicCompanySettings()
+})
 </script>

@@ -8,17 +8,23 @@
           to="/" 
           class="group flex items-center gap-3 text-2xl font-bold text-white tracking-tight hover:scale-105 transition-transform duration-300"
         >
-          <!-- Logo Icon -->
-          <div class="relative w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-white/50 transition-shadow duration-300">
-            <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Logo -->
+          <div class="relative w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-white/50 transition-shadow duration-300 overflow-hidden">
+            <img
+              v-if="logoUrl"
+              :src="logoUrl"
+              :alt="siteName"
+              class="w-full h-full object-cover"
+            />
+            <svg v-else class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
-            <div class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-slate-950 animate-pulse"></div>
+            <div v-if="!logoUrl" class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-slate-950 animate-pulse"></div>
           </div>
-          
-          <!-- Logo Text -->
+
+          <!-- Site Name -->
           <span class="text-white">
-            {{ appName }}
+            {{ siteName }}
           </span>
         </NuxtLink>
 
@@ -124,7 +130,7 @@
           <!-- Mobile Menu Footer -->
           <!-- <div class="px-6 py-4 border-t border-white/5">
             <p class="text-xs text-gray-500 text-center">
-              © 2024 {{ appName }}. Delivering Excellence.
+              © 2024 {{ siteName }}. Delivering Excellence.
             </p>
           </div> -->
         </div>
@@ -137,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { appName } from '~/utils/appName'
+import { siteName } from '~/utils/siteName'
 
 const navLinks = [
   { 

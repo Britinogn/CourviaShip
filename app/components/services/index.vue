@@ -205,7 +205,8 @@
 <script setup lang="ts">
 import { h } from 'vue'
 
-const appName = 'CourviaShip'
+import {siteName} from '../../utils/siteName'
+
 
 const internationalFeatures = [
   'Door-to-door delivery to 150+ countries',
@@ -274,7 +275,7 @@ const additionalServices = [
 ]
 
 useSeoMeta({
-  title: `Services - ${appName} Logistics Solutions`,
-  description: `Explore ${appName}'s comprehensive logistics services including international shipping, express delivery, freight services, and e-commerce fulfillment.`
+  title: `Services - ${siteName} Logistics Solutions`,
+  description: `Explore ${siteName}'s comprehensive logistics services including international shipping, express delivery, freight services, and e-commerce fulfillment.`
 })
 </script>

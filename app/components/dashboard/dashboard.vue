@@ -6,7 +6,7 @@
         <div class="mb-6 sm:mb-8">
           <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
           <p class="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
-            Welcome back {{ appName }}! Here's your shipment overview.
+            Welcome back {{ siteName }}! Here's your shipment overview.
           </p>
         </div>
   
@@ -183,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-    import { appName } from '../../utils/appName'
+    import { siteName } from '../../utils/siteName'
     import ShipmentStatusChart from '../charts/ShipmentStatusChart.vue'
     import ShipmentTimeChart from '../charts/ShipmentTimeChart.vue'
     import ShipmentCountryChart from '../charts/ShipmentCountryChart.vue'

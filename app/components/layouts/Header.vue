@@ -252,7 +252,7 @@
 </template>
 
 <script setup lang="ts">
-import { appName } from '~/utils/appName'
+// import { siteName } from '~/utils/appName'
 
 defineEmits<{
     'toggle-sidebar': []

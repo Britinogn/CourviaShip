@@ -8,7 +8,7 @@ export const useSeo = (options: {
   keywords?: string
 } = {}) => {
   const title = options.title 
-    ? `${options.title} - ${seoConfig.appName}`
+    ? `${options.title} - ${seoConfig.siteName}`
     : seoConfig.title
 
   const description = options.description || seoConfig.description
@@ -25,7 +25,7 @@ export const useSeo = (options: {
       { name: 'title', content: title },
       { name: 'description', content: description },
       { name: 'keywords', content: options.keywords || seoConfig.keywords },
-      { name: 'author', content: seoConfig.appName },
+      { name: 'author', content: seoConfig.siteName },
       { name: 'robots', content: 'index, follow' },
       
       // Open Graph / Facebook
@@ -34,7 +34,7 @@ export const useSeo = (options: {
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: image },
-      { property: 'og:site_name', content: seoConfig.appName },
+      { property: 'og:site_name', content: seoConfig.siteName },
       { property: 'og:locale', content: seoConfig.locale },
       
       // Twitter / X
@@ -46,7 +46,7 @@ export const useSeo = (options: {
       
       // Additional
       { name: 'theme-color', content: seoConfig.themeColor },
-      { name: 'application-name', content: seoConfig.appName },
+      { name: 'application-name', content: seoConfig.siteName },
       { name: 'mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },

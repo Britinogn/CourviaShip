@@ -27,6 +27,8 @@ export default defineNuxtConfig({
     public: {
       baseURL: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:5000/api",
       mediaBaseURL: process.env.NUXT_PUBLIC_MEDIA_BASE || "http://localhost:5000",
+      // tawkPropertyId: process.env.NUXT_PUBLIC_TAWK_PROPERTY_ID || "",
+      // tawkWidgetId: process.env.NUXT_PUBLIC_TAWK_WIDGET_ID || "",
     },
   },
 });
