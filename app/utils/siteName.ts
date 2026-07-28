@@ -1,5 +1,6 @@
 const siteName = ref('')
 const siteURL = ref('https://courviaship.onrender.com')
+const supportEmail = ref('courviaship@gmail.com')
 const logoUrl = ref('')
 
 const siteNameShort = computed(() => siteName.value.replace(/\s+/g, '').toLowerCase())
@@ -16,4 +17,9 @@ const setLogoUrl = (value: string) => {
     logoUrl.value = value
 }
 
-export { siteName, siteNameShort, setSiteName, setSiteURL, siteURL, logoUrl, setLogoUrl }
+const setSupportEmail = (value: string) => {
+    supportEmail.value = value
+}
+
+
+export { siteName, siteNameShort, setSiteName, setSiteURL, siteURL, logoUrl, setLogoUrl, supportEmail, setSupportEmail }

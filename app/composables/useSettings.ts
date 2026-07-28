@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/stores/auth'
 import { useToast } from '~/composables/useToast'
-import { setSiteName, setSiteURL } from '~/utils/siteName'
+import { setSiteName, setSiteURL, setSupportEmail } from '~/utils/siteName'
 
 interface ProfileSettings {
   _id?: string
@@ -252,7 +252,11 @@ export function useSettings() {
         }
 
         if (companyData.websiteUrl) {
-          setSiteName(companyData.websiteUrl)
+          setSiteURL(companyData.websiteUrl)
+        }
+
+        if (companyData.supportEmail) {
+          setSupportEmail(companyData.supportEmail)
         }
       }
     } catch (error: any) {
@@ -296,6 +300,10 @@ export function useSettings() {
 
         if (updatedCompany.websiteUrl) {
           setSiteURL(updatedCompany.websiteUrl)
+        }
+
+        if (updatedCompany.supportEmail) {
+          setSupportEmail(updatedCompany.supportEmail)
         }
       }
 
@@ -360,7 +368,7 @@ export function useSettings() {
 
   const fetchPublicCompanySettings = async () => {
     try {
-      const response = await $fetch<{ status: boolean; data: { companyName: string; websiteUrl: string; logoUrl?: string } }>(
+      const response = await $fetch<{ status: boolean; data: { companyName: string; websiteUrl: string; logoUrl?: string; supportEmail?: string } }>(
         `${runtimeConfig.public.baseURL}/settings/company/public`
       )
 
@@ -372,6 +380,9 @@ export function useSettings() {
       }
       if (response?.data?.logoUrl) {
         setLogoUrl(resolveAssetUrl(response.data.logoUrl))
+      }
+      if (response?.data?.supportEmail) {
+        setSupportEmail(response.data.supportEmail)
       }
     } catch (error) {
       console.error('Failed to load public company settings:', error)

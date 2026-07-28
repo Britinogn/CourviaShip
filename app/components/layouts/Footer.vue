@@ -34,7 +34,7 @@
         <div>
           <h4 class="text-white text-sm font-semibold mb-4">Contact</h4>
           <ul class="space-y-2.5 text-sm">
-            <li>Email: support@{{ siteNameShort }}.com</li>
+            <li>Email: {{ supportEmail }}</li>
             <li>Phone: +1 (272) 900-1432</li>
             <li>Washington, D.C., USA</li>
           </ul>
@@ -66,5 +66,5 @@
 </template>
   
 <script setup lang="ts">
-  import { siteName, siteNameShort, logoUrl } from '~/utils/siteName'
+  import { siteName, siteNameShort, logoUrl , supportEmail} from '~/utils/siteName'
 </script>

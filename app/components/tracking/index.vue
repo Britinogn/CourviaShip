@@ -119,7 +119,7 @@
                 <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                   Check your confirmation email or reach our support team at
                   <a href="mailto:support@courviaship.com" class="text-green-700 font-semibold hover:underline">
-                    support@courviaship.com
+                    {{supportEmail}}
                   </a>
                 </p>
               </div>
@@ -476,6 +476,7 @@ import type { ITrackingShipment } from '~/types'
 import { ShipmentStatus } from '~/types'
 import { ref, watch, nextTick } from 'vue'
 import { useTracking } from '@/composables/useTracking'
+import { supportEmail} from '~/utils/siteName'
 
 const { trackShipment } = useTracking()
 const toast = useToast()
